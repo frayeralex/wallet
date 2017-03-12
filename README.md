@@ -5,63 +5,73 @@ Yii 2 "Wallet"
 
 ec2-35-156-244-104.eu-central-1.compute.amazonaws.com
 
-DB
 ```sql
 CREATE TABLE `Users` (
 	`id` INT NOT NULL,
-	`name` varchar(200) NOT NULL,
-	`surname` varchar(200) NOT NULL,
-	`email` varchar(200) NOT NULL,
+	`firstName` varchar NOT NULL,
+	`lastName` varchar NOT NULL,
+	`email` varchar NOT NULL,
+	`phone` INT NOT NULL,
+	`username` varchar NOT NULL,
 	PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `Incomes` (
+CREATE TABLE `income` (
 	`id` INT NOT NULL,
-	`date` DATE NOT NULL,
-	`user_id` INT NOT NULL,
-	`category_id` INT NOT NULL,
-	`walet` varchar NOT NULL,
+	`createdAt` DATE NOT NULL,
+	`userId` INT NOT NULL,
+	`categoryId` INT NOT NULL,
+	`waletId` varchar NOT NULL,
+	`updatedAt` DATE NOT NULL,
+	`value` INT NOT NULL,
+	`title` varchar NOT NULL,
 	PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `Outcomes` (
+CREATE TABLE `outcome` (
 	`id` INT NOT NULL,
-	`date` DATE NOT NULL,
-	`user_id` INT NOT NULL,
-	`category_id` DATE NOT NULL,
-	`wallet` varchar NOT NULL,
+	`createdAt` DATE NOT NULL,
+	`userId` INT NOT NULL,
+	`categoryId` DATE NOT NULL,
+	`walletId` varchar NOT NULL,
+	`updatedAt` DATE NOT NULL,
+	`value` INT NOT NULL,
+	`title` varchar NOT NULL,
 	PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `Categories` (
+CREATE TABLE `category` (
 	`id` INT NOT NULL,
 	`name` varchar(50) NOT NULL UNIQUE,
 	`type` varchar(50) NOT NULL,
-	`owner` varchar(200) NOT NULL,
+	`userId` INT NOT NULL,
 	PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `Wallet` (
 	`id` INT NOT NULL,
 	`name` varchar(50) NOT NULL UNIQUE,
-	`owner` INT NOT NULL,
-	`value` FLOAT NOT NULL,
+	`userId` INT NOT NULL,
+	`value` INT NOT NULL,
+	`createdAt` DATE NOT NULL,
+	`updatedAt` DATE NOT NULL,
 	PRIMARY KEY (`id`)
 );
 
-ALTER TABLE `Incomes` ADD CONSTRAINT `Incomes_fk0` FOREIGN KEY (`user_id`) REFERENCES `Users`(`id`);
+ALTER TABLE `income` ADD CONSTRAINT `income_fk0` FOREIGN KEY (`userId`) REFERENCES `Users`(`id`);
 
-ALTER TABLE `Incomes` ADD CONSTRAINT `Incomes_fk1` FOREIGN KEY (`category_id`) REFERENCES `Categories`(`id`);
+ALTER TABLE `income` ADD CONSTRAINT `income_fk1` FOREIGN KEY (`categoryId`) REFERENCES `category`(`id`);
 
-ALTER TABLE `Incomes` ADD CONSTRAINT `Incomes_fk2` FOREIGN KEY (`walet`) REFERENCES `Wallet`(`name`);
+ALTER TABLE `income` ADD CONSTRAINT `income_fk2` FOREIGN KEY (`waletId`) REFERENCES `Wallet`(`name`);
 
-ALTER TABLE `Outcomes` ADD CONSTRAINT `Outcomes_fk0` FOREIGN KEY (`user_id`) REFERENCES `Users`(`id`);
+ALTER TABLE `outcome` ADD CONSTRAINT `outcome_fk0` FOREIGN KEY (`userId`) REFERENCES `Users`(`id`);
 
-ALTER TABLE `Outcomes` ADD CONSTRAINT `Outcomes_fk1` FOREIGN KEY (`category_id`) REFERENCES `Categories`(`id`);
+ALTER TABLE `outcome` ADD CONSTRAINT `outcome_fk1` FOREIGN KEY (`categoryId`) REFERENCES `category`(`id`);
 
-ALTER TABLE `Outcomes` ADD CONSTRAINT `Outcomes_fk2` FOREIGN KEY (`wallet`) REFERENCES `Wallet`(`name`);
+ALTER TABLE `outcome` ADD CONSTRAINT `outcome_fk2` FOREIGN KEY (`walletId`) REFERENCES `Wallet`(`name`);
 
-ALTER TABLE `Categories` ADD CONSTRAINT `Categories_fk0` FOREIGN KEY (`owner`) REFERENCES `Users`(`id`);
+ALTER TABLE `category` ADD CONSTRAINT `category_fk0` FOREIGN KEY (`userId`) REFERENCES `Users`(`id`);
 
-ALTER TABLE `Wallet` ADD CONSTRAINT `Wallet_fk0` FOREIGN KEY (`owner`) REFERENCES `Users`(`id`);
+ALTER TABLE `Wallet` ADD CONSTRAINT `Wallet_fk0` FOREIGN KEY (`userId`) REFERENCES `Users`(`id`);
+
 ```
