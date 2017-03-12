@@ -12,6 +12,9 @@ use yii\web\IdentityInterface;
  *
  * @property integer $id
  * @property string $username
+ * @property string $firstName
+ * @property string $lastName
+ * @property integer $phone
  * @property string $password_hash
  * @property string $password_reset_token
  * @property string $email
@@ -53,6 +56,18 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function fields()
+    {
+        return [
+            'name' => function () {
+                return $this->firstName . ' ' . $this->lastName;
+            },
         ];
     }
 

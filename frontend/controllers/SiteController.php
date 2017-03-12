@@ -1,8 +1,11 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\Category;
+use common\models\Income;
 use Yii;
 use yii\base\InvalidParamException;
+use yii\helpers\ArrayHelper;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -11,7 +14,7 @@ use common\models\LoginForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
-use frontend\models\ContactForm;
+use common\models\Wallet;
 
 /**
  * Site controller
@@ -96,50 +99,129 @@ class SiteController extends Controller
         }
     }
 
-    /**
-     * Logs out the current user.
-     *
-     * @return mixed
-     */
+
     public function actionLogout()
     {
         Yii::$app->user->logout();
-
         return $this->goHome();
     }
 
-    /**
-     * Displays contact page.
-     *
-     * @return mixed
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
-                Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
-            } else {
-                Yii::$app->session->setFlash('error', 'There was an error sending your message.');
-            }
 
-            return $this->refresh();
-        } else {
-            return $this->render('contact', [
+    public function actionIncome()
+    {
+        $model = new Income();
+
+        if(Yii::$app->request->isPost){
+            if ($model->load(Yii::$app->request->post()) && $model->validate()){
+                $model->setAttribute('createdAt', date(DATE_ATOM, time()));
+                $model->setAttribute('userId', Yii::$app->getUser()->id);
+                $income = ArrayHelper::getValue(Yii::$app->request->post(), 'Income');
+                $model->setAttribute('value', (integer)ArrayHelper::getValue($income, 'value'));
+                $model->setAttribute('walletId', (integer)ArrayHelper::getValue($income, 'walletId'));
+                $model->setAttribute('categoryId', (integer)ArrayHelper::getValue($income, 'categoryId'));
+                $model->save();
+                $this->refresh();
+            }
+        }else{
+            $transactions = Income::find()
+                ->where(['userId' => Yii::$app->getUser()->id])
+                ->all();
+
+            $categories = Category::find()
+                ->where([
+                    'userId' => Yii::$app->getUser()->id,
+                    'type' => Category::INCOME_CATEGORY])
+                ->asArray()
+                ->all();
+
+            $wallets = Wallet::find()
+                ->where(['userId' => Yii::$app->getUser()->id])
+                ->asArray()
+                ->all();
+
+            return $this->render('income', [
+                'transactions' => $transactions,
                 'model' => $model,
+                'categories' => ArrayHelper::map($categories, 'id', 'name'),
+                'wallets' =>  ArrayHelper::map($wallets, 'id', 'name')
             ]);
         }
+
+
+    }
+
+    public function actionCategory()
+    {
+        $model = new Category();
+
+        if(Yii::$app->request->isPost){
+            if ($model->load(Yii::$app->request->post()) && $model->validate()){
+                $model->createdAt = date(DATE_ATOM, time());
+                $model->userId = Yii::$app->getUser()->id;
+                $model->save();
+                $this->refresh();
+            }
+        }
+
+        $outcome = Category::find()
+            ->where([
+                'userId' => Yii::$app->getUser()->id,
+                'type' => $model::OUTCOME_CATEGORY ])
+            ->all();
+
+        $income = Category::find()
+            ->where([
+                'userId' => Yii::$app->getUser()->id,
+                'type' => $model::INCOME_CATEGORY ])
+            ->all();
+
+        return $this->render('category', [
+            'model' => $model,
+            'outcome' => $outcome,
+            'income' => $income,
+            'categories' => Category::CATEGORIES
+        ]);
+    }
+
+    public function actionWallet()
+    {
+        $model = new Wallet();
+
+        if(Yii::$app->request->isPost){
+            if ($model->load(Yii::$app->request->post()) && $model->validate()){
+                $model->createdAt = date(DATE_ATOM, time());
+                $model->userId = Yii::$app->getUser()->id;
+                $model->save();
+                $this->refresh();
+            }
+        }
+
+        $walletList = Wallet::find()
+            ->where(['userId' => Yii::$app->getUser()->id])
+            ->all();
+
+        return $this->render('wallet', [
+            'walletList' => $walletList,
+            'model' => $model,
+            'currencies' => Wallet::CURRENCIES
+        ]);
     }
 
     /**
-     * Displays about page.
-     *
-     * @return mixed
+     * Delete wallets
      */
-    public function actionAbout()
+    public function actionDeleteWallet ()
     {
-        return $this->render('about');
+        if(Yii::$app->request->isAjax){
+            $wallet = Wallet::findOne(Yii::$app->request->post('id'));
+            if($wallet){
+                $wallet->delete();
+                return Yii::$app->response->setStatusCode(200);
+            }
+        }
+        return Yii::$app->response->setStatusCode(400);
     }
+
 
     /**
      * Signs user up.
