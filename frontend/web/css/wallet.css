@@ -1,0 +1,10 @@
+.wallet-item button{
+    opacity: 0;
+    transition: .5s;
+    position: relative;
+    right: -5px;
+}
+.wallet-item:hover button{
+    opacity: 1;
+    right: 0;
+}

@@ -13,8 +13,11 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/site.css',
+        'css/wallet.css',
     ];
     public $js = [
+        'https://www.gstatic.com/charts/loader.js',
+        'js/main.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',
