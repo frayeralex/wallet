@@ -12,8 +12,8 @@ class m170312_080334_add_info_column_to_user_table extends Migration
      */
     public function up()
     {
-        $this->addColumn('user', 'firstName', $this->text());
-        $this->addColumn('user', 'lastName', $this->text());
+        $this->addColumn('user', 'firstName', $this->string(50));
+        $this->addColumn('user', 'lastName', $this->string(50));
         $this->addColumn('user', 'phone', $this->integer());
     }
 

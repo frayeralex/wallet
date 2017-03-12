@@ -14,7 +14,7 @@ class m170312_073325_create_utcome_table extends Migration
     {
         $this->createTable('outcome', [
             'id' => $this->primaryKey(),
-            'title' => $this->string(),
+            'title' => $this->string(50),
             'createdAt' => $this->datetime()->notNull(),
             'updatedAt' => $this->datetime(),
             'value' => $this->integer()->notNull(),
