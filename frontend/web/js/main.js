@@ -1,15 +1,18 @@
+'use strict';
+
 jQuery(function ($) {
     const App = function (selector) {
         this.DOM = $(selector);
-        const self = this;
+        const foo = 'foo';
 
-        this.showLoader = function () {
-            self.DOM.addClass('activeLoader')
-        };
+    };
+    App.loaderClass = 'activeLoader';
 
-        this.hideLoader = function () {
-            self.DOM.removeClass('activeLoader')
-        };
+    App.prototype.showLoader = function () {
+        this.DOM.addClass(App.loaderClass)
+    };
+    App.prototype.hideLoader = function () {
+        this.DOM.removeClass(App.loaderClass)
     };
 
     const app = new App('#app');
@@ -28,12 +31,10 @@ jQuery(function ($) {
             data: {id: id },
             success: function () {
                 $(event.currentTarget).parents('tr').remove();
-                console.log($(event.currentTarget))
                 app.hideLoader();
             },
             error: function (err) {
                 app.hideLoader();
-                console.log("err",err)
             }
         })
     });
@@ -43,51 +44,67 @@ jQuery(function ($) {
      */
 
     const pieChart = document.querySelector('#piechart_3d');
-    if(pieChart && window.google){
-        window.google.charts.load("current", {packages:["corechart"]});
-
-
-        $.ajax({
-            url: '/ajax/index',
-            type: 'POST',
-            success: function (d) {
-                window.google.charts.setOnLoadCallback(drawChart);
-                function drawChart() {
-                    var rows = [['Category', 'Value']];
-                    JSON.parse(d).category
-                        .forEach(function(item){
-                            var value = 0;
-                            JSON.parse(d).incomes.forEach(function (income) {
-                                if(income.categoryId == item.id){
-                                    value += parseFloat(income.value);
-                                }
-                            });
-                            rows.push([item.name, value])
-                        });
-
-                    var data = google.visualization.arrayToDataTable(rows);
-
-                    var options = {
-                        title: 'Incomes for categories',
-                        is3D: true,
-                        chartArea: {
-                            top: 20,
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            width: '100%',
-                            height: '100%'
-                        }
-                    };
-
-                    var chart = new google.visualization.PieChart(pieChart);
-                    chart.draw(data, options);
-                }
+    function pendingGoogle(cb) {
+        if(
+            !google
+            || !google.charts
+            || !google.visualization
+            || !google.visualization.arrayToDataTable
+            || !google.visualization.PieChart
+        ){
+            pendingGoogle.count = pendingGoogle.count ? pendingGoogle.count + 1 : 0;
+            if(pendingGoogle.count < 100){
+                pendingGoogle.time = setTimeout(()=>{pendingGoogle(cb)}, 20);
+            }else{
+                clearTimeout(pendingGoogle.time);
             }
-        });
-
-
-
+        }else{
+            return cb()
+        }
+    }
+    function drawPieChart(rows, options, domElement) {
+        const data = google.visualization.arrayToDataTable(rows);
+        const chart = new google.visualization.PieChart(domElement);
+        chart.draw(data, options);
     }
 
+    if(pieChart){
+        window.google.charts.load("current", {packages:["corechart"]});
+
+        $.ajax({
+            url: '/ajax/user-incomes',
+            type: 'POST',
+            success: function (response) {
+                const incomes = JSON.parse(response);
+                const rows = [['Category', 'Value']];
+                const options = {
+                    title: 'Incomes for categories',
+                    is3D: true,
+                    chartArea: {
+                        top: 20,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        width: '100%',
+                        height: '100%'
+                    }
+                };
+                const categories = incomes
+                    .map(income=>income.category)
+                    .reduce((prev, current) => {
+                        if(!prev.some(item=>item.id === current.id)) prev.push(current);
+                        return prev;
+                    }, []);
+
+                categories.forEach(category=>{
+                    const value = incomes.reduce((value, income)=>{
+                        if(income.categoryId === category.id) value += +income.value;
+                        return value;
+                    },0);
+                    rows.push([category.name,value]);
+                });
+                pendingGoogle(()=>drawPieChart(rows, options, pieChart));
+            }
+        });
+    }
 })

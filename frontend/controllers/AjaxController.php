@@ -16,23 +16,16 @@ class AjaxController extends Controller
     /**
      * Incomes pie chart data
      */
-    public function actionIndex ()
+    public function actionUserIncomes ()
     {
         $incomes = Income::find()
             ->where(['userId' => Yii::$app->getUser()->id])
-            ->asArray()
-            ->all();
-
-        $categories = Category::find()
-            ->where(['id' => ArrayHelper::getColumn($incomes,'categoryId')])
+            ->with('category')
             ->asArray()
             ->all();
 
         if(Yii::$app->request->isAjax){
-            return Json::encode([
-                "incomes" => $incomes,
-                "category" => $categories,
-            ]);
+            return Json::encode($incomes);
         }
     }
 }

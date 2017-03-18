@@ -6,10 +6,11 @@
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
+use frontend\components\HeaderWidget;
 use frontend\assets\AppAsset;
-use common\widgets\Alert;
+use frontend\assets\FAAsset;
 
+FAAsset::register($this);
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
@@ -26,10 +27,9 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 
 <div id="app">
-    <div class="loader">Loading...</div>
     <?php
     NavBar::begin([
-        'brandLabel' => 'My Company',
+        'brandLabel' => 'Wallet',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
@@ -59,8 +59,20 @@ AppAsset::register($this);
         'items' => $menuItems,
     ]);
     NavBar::end();
+
     ?>
+    <div class="loader">Loading...</div>
     <div class="container">
+        <aside class="main-nav">
+            <?= HeaderWidget::widget(['items' => [
+                ['label' => 'Home', 'url' => '/site/index'],
+                ['label' => 'Wallet', 'url' => '/site/wallet'],
+                ['label' => 'Category', 'url' => '/site/category'],
+                ['label' => 'income', 'url' => '/site/income'],
+                ['label' => 'income', 'url' => '/site/income'],
+                ['label' => 'Logoute', 'url' => '/site/logout'],
+            ]]) ?>
+        </aside>
         <?= $content ?>
     </div>
 </div>
