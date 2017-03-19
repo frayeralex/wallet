@@ -46,7 +46,7 @@ use \yii\bootstrap\ActiveForm;
                 <?= Html::activeDropDownList($model, 'currency', ArrayHelper::index($currencies, function($e){return $e;}), ['class' => 'form-control']) ?>
             </div>
 
-            <?= $form->field($model, 'value')->input('number') ?>
+            <?= $form->field($model, 'value')->textInput(['type' => 'number', 'step'=> '0.01']) ?>
 
             <div class="form-group">
                 <?= Html::submitButton('Create wallet', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>

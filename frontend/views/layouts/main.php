@@ -37,7 +37,8 @@ AppAsset::register($this);
                 ['label' => 'Analytic', 'url' => '/site/index'],
                 ['label' => 'Wallet', 'url' => '/site/wallet'],
                 ['label' => 'Category', 'url' => '/site/category'],
-                ['label' => 'Transactions', 'url' => '/site/income'],
+                ['label' => 'Income', 'url' => '/site/income'],
+                ['label' => 'Outcome', 'url' => '/site/income'],
                 ['label' => 'Settings', 'url' => '/site/income'],
             ]]) ?>
         </nav>

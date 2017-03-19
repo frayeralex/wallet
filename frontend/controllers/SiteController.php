@@ -89,7 +89,6 @@ class SiteController extends Controller
                 $model->setAttribute('createdAt', date(DATE_ATOM, time()));
                 $model->setAttribute('userId', Yii::$app->getUser()->id);
                 $income = ArrayHelper::getValue(Yii::$app->request->post(), 'Income');
-                $model->setAttribute('value', (integer)ArrayHelper::getValue($income, 'value'));
                 $model->setAttribute('walletId', (integer)ArrayHelper::getValue($income, 'walletId'));
                 $model->setAttribute('categoryId', (integer)ArrayHelper::getValue($income, 'categoryId'));
                 $model->save();
@@ -98,6 +97,7 @@ class SiteController extends Controller
         }else{
             $transactions = Income::find()
                 ->where(['userId' => Yii::$app->getUser()->id])
+                ->limit(10)
                 ->all();
 
             $categories = Category::find()
@@ -119,8 +119,6 @@ class SiteController extends Controller
                 'wallets' =>  ArrayHelper::map($wallets, 'id', 'name')
             ]);
         }
-
-
     }
 
     public function actionCategory()

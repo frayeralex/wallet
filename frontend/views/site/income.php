@@ -40,7 +40,7 @@ use yii\bootstrap\ActiveForm;
 
             <?= $form->field($model, 'title') ?>
 
-            <?= $form->field($model, 'value')->input('number') ?>
+            <?= $form->field($model, 'value')->textInput(['type' => 'number', 'step'=> '0.01']) ?>
 
             <div class="form-group">
                 <label>Category</label>

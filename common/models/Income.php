@@ -14,7 +14,7 @@ use yii\db\ActiveRecord;
  *
  * @property integer $id
  * @property string $title
- * @property integer $value
+ * @property double $value
  * @property integer $createdAt
  * @property integer $updatedAt
  * @property integer $userId
@@ -34,6 +34,8 @@ class Income extends ActiveRecord
             ['title', 'required'],
             ['title', 'trim'],
             ['title', 'string', 'min' => 2, 'max' => 50],
+            ['value', 'required'],
+            ['value', 'double'],
         ];
     }
 

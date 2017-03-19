@@ -19,7 +19,7 @@ class m170312_075937_create_wallet_table extends Migration
             'id' => $this->primaryKey(),
             'name' => $this->string(50)->notNull(),
             'currency' => $this->string(5)->notNull(),
-            'value' => $this->integer()->defaultValue(0),
+            'value' => $this->double()->defaultValue(0),
             'userId' => $this->integer()->notNull(),
             'createdAt' => $this->datetime()->notNull(),
             'updatedAt' => $this->datetime(),

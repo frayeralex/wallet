@@ -13,7 +13,7 @@ use yii\db\ActiveRecord;
  * @property integer $id
  * @property string $name
  * @property string $currency
- * @property integer $value
+ * @property double $value
  * @property integer $createdAt
  * @property integer $updatedAt
  * @property integer $userId
@@ -38,7 +38,7 @@ class Wallet extends ActiveRecord
             ['currency', 'default', 'value' => self::CURRENCIES[0]],
             ['currency', 'in', 'range' => self::CURRENCIES],
 
-            ['value', 'number'],
+            ['value', 'double'],
             ['value', 'default', 'value' => 0],
         ];
     }

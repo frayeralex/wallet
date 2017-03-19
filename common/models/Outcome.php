@@ -14,7 +14,7 @@ use yii\db\ActiveRecord;
  *
  * @property integer $id
  * @property string $title
- * @property integer $value
+ * @property double $value
  * @property integer $createdAt
  * @property integer $updatedAt
  * @property integer $userId
