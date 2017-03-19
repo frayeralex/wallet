@@ -16,6 +16,14 @@ class AuthorisationController extends Controller
 {
     public $layout = 'authorisation';
 
+    public function beforeAction($event)
+    {
+        if(!Yii::$app->user->isGuest){
+            return $this->goHome();
+        }
+        return parent::beforeAction($event);
+    }
+
     public function actionIndex()
     {
 
@@ -43,6 +51,15 @@ class AuthorisationController extends Controller
         return $this->render('signup', [
             'model' => $model,
         ]);
+    }
+
+    public function actionLogout()
+    {
+        if(Yii::$app->request->isAjax){
+            Yii::$app->user->logout();
+
+            $this->goHome();
+        }
     }
 
     public function actionRequestPasswordReset()

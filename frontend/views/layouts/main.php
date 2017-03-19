@@ -1,12 +1,7 @@
 <?php
 
-/* @var $this \yii\web\View */
-/* @var $content string */
-
 use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use frontend\components\HeaderWidget;
+use frontend\components\SidebarWidget;
 use frontend\assets\AppAsset;
 use frontend\assets\FAAsset;
 
@@ -26,55 +21,35 @@ AppAsset::register($this);
 <body>
 <?php $this->beginBody() ?>
 
-<div id="app">
-    <?php
-    NavBar::begin([
-        'brandLabel' => 'Wallet',
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
-        ],
-    ]);
-    $menuItems = [
-        ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'Wallet', 'url' => ['/site/wallet']],
-        ['label' => 'Category', 'url' => ['/site/category']],
-        ['label' => 'income', 'url' => ['/site/income']],
-    ];
-    if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
-    } else {
-        $menuItems[] = '<li>'
-            . Html::beginForm(['/site/logout'], 'post')
-            . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'btn btn-link logout']
-            )
-            . Html::endForm()
-            . '</li>';
-    }
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => $menuItems,
-    ]);
-    NavBar::end();
-
-    ?>
-    <div class="loader">Loading...</div>
-    <div class="container">
-        <aside class="main-nav">
-            <?= HeaderWidget::widget(['items' => [
-                ['label' => 'Home', 'url' => '/site/index'],
+<div id="app" class="app">
+    <header class="app-header">
+        <div class="logo">Wallet</div>
+    </header>
+    <aside class="main-sidebar">
+        <div class="user-info">
+            <div class="avatar-wrap">
+                <img src="/img/user.png" alt="">
+            </div>
+            <span class="name">Admin Admin</span>
+        </div>
+        <nav class="sidebar-nav">
+            <?= SidebarWidget::widget(['items' => [
+                ['label' => 'Analytic', 'url' => '/site/index'],
                 ['label' => 'Wallet', 'url' => '/site/wallet'],
                 ['label' => 'Category', 'url' => '/site/category'],
-                ['label' => 'income', 'url' => '/site/income'],
-                ['label' => 'income', 'url' => '/site/income'],
-                ['label' => 'Logoute', 'url' => '/site/logout'],
+                ['label' => 'Transactions', 'url' => '/site/income'],
+                ['label' => 'Settings', 'url' => '/site/income'],
             ]]) ?>
-        </aside>
-        <?= $content ?>
-    </div>
+        </nav>
+        <div class="logout-block">
+            <button type="button" class="logout-btn">Exit</button>
+        </div>
+    </aside>
+    <main class="content">
+        <div class="content-area">
+            <?= $content ?>
+        </div>
+    </main>
 </div>
 
 

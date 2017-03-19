@@ -5,12 +5,10 @@ namespace frontend\components;
 
 use Yii;
 use yii\base\Widget;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use yii\helpers\Url;
 
 
-class HeaderWidget extends Widget
+class SidebarWidget extends Widget
 {
     public $items;
 
@@ -24,11 +22,7 @@ class HeaderWidget extends Widget
 
     public function run()
     {
-        $html = Html::beginTag('ul', ['class' => 'sidebar-nav']);
-        if(Yii::$app->user->isGuest){
-            $this->items =  ArrayHelper::filter($this->items, ['public' => true]);
-        }
-
+        $html = Html::beginTag('ul');
         foreach ($this->items as $item){
             $options = [
                 'href' => $item["url"],
@@ -36,7 +30,6 @@ class HeaderWidget extends Widget
             $html .= Html::beginTag('li', ['class' => 'social-item-link']);;
             $html .= Html::beginTag('a', $options);
             $html .= $item['label'];
-            $html .= '<i class="fa fa-facebook"></i>';
             $html .= Html::endTag('a');
             $html .= Html::endTag('li');
         }

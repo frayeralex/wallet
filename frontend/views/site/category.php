@@ -50,10 +50,10 @@ use \yii\bootstrap\ActiveForm;
         </div>
     </div>
 
-    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Add category</button>
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#my">Add category</button>
 
     <!-- Modal -->
-    <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal fade" id="my" role="dialog">
         <div class="modal-dialog">
 
             <!-- Modal content-->

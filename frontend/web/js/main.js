@@ -29,18 +29,18 @@ jQuery(function ($) {
             url: '/site/delete-wallet',
             type: 'POST',
             data: {id: id },
-            success: function () {
+            success: ()=> {
                 $(event.currentTarget).parents('tr').remove();
                 app.hideLoader();
             },
-            error: function (err) {
+            error: ()=> {
                 app.hideLoader();
             }
         })
     });
 
     /**
-     * Home page analytic
+     * Analytic page
      */
 
     const pieChart = document.querySelector('#piechart_3d');
@@ -74,7 +74,7 @@ jQuery(function ($) {
         $.ajax({
             url: '/ajax/user-incomes',
             type: 'POST',
-            success: function (response) {
+            success: (response)=> {
                 const incomes = JSON.parse(response);
                 const rows = [['Category', 'Value']];
                 const options = {
@@ -107,4 +107,24 @@ jQuery(function ($) {
             }
         });
     }
+
+
+    /**
+     * Sidebar actions
+     */
+
+    const logout = $('.logout-btn');
+
+    logout.on('click',  logoutAction);
+
+    function logoutAction(){
+        $.ajax({
+            url: '/authorisation/logout',
+            type: 'POST',
+            success: ()=>{
+                console.log("good")
+            }
+        })
+    }
+
 })
