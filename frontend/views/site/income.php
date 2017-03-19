@@ -3,14 +3,15 @@
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\bootstrap\ActiveForm;
+use yii\helpers\Url;
 
 ?>
 <div class="site-contact">
     <h1>Incomes</h1>
 
-
+    <?php if(!!count($wallets) && !!count($categories)){ ?>
     <div class="row">
-        <div class="col-md-8">>
+        <div class="col-md-8">
             <table class="table table-hover">
                 <thead>
                 <tr>
@@ -24,14 +25,13 @@ use yii\bootstrap\ActiveForm;
                 <tbody>
                 <?php  foreach ($transactions as $item){?>
                     <tr class="wallet-item">
-                        <td><?= $item->title ?></td>
-                        <td><?= ArrayHelper::getValue($categories, $item->categoryId)  ?></td>
-                        <td><?= ArrayHelper::getValue($wallets, $item->walletId) ?></td>
-                        <td><?= $item->value ?></td>
+                        <td><?= Html::encode($item->title) ?></td>
+                        <td><?= Html::encode($item->category->name) ?></td>
+                        <td><?= Html::encode($item->wallet->name) ?></td>
+                        <td><?= Html::encode($item->value) ?> (<?= Html::encode($item->wallet->currency) ?>)</td>
                         <td><?= Yii::$app->formatter->asDate($item->createdAt) ?></td>
-                        <td>
                     </tr>
-                <?php } var_dump($wallets)?>
+                <?php } ?>
                 </tbody>
             </table>
         </div>
@@ -59,5 +59,19 @@ use yii\bootstrap\ActiveForm;
             <?php ActiveForm::end(); ?>
         </div>
     </div>
-
+    <?php } if(!count($wallets)) { ?>
+    <div class="alert alert-warning" role="alert">
+        <?= Yii::t('app', 'Firstly you must add wallet')?>
+        <a href="<?= Url::toRoute(["/site/wallet"])?>">
+            <?= Yii::t('app', 'Please, go to wallet page')?>
+        </a>
+    </div>
+    <?php } if (!count($categories)) {?>
+    <div class="alert alert-warning" role="alert">
+        <?= Yii::t('app', 'Firstly you must add income category')?>
+        <a href="<?= Url::toRoute(["/site/category"])?>">
+            <?= Yii::t('app', 'Please, go to category page')?>
+        </a>
+    </div>
+    <?php } ?>
 </div>

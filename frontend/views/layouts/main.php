@@ -34,12 +34,12 @@ AppAsset::register($this);
         </div>
         <nav class="sidebar-nav">
             <?= SidebarWidget::widget(['items' => [
-                ['label' => 'Analytic', 'url' => '/site/index'],
-                ['label' => 'Wallet', 'url' => '/site/wallet'],
-                ['label' => 'Category', 'url' => '/site/category'],
-                ['label' => 'Income', 'url' => '/site/income'],
-                ['label' => 'Outcome', 'url' => '/site/income'],
-                ['label' => 'Settings', 'url' => '/site/income'],
+                ['label' => 'Analytic', 'url' => '/site/index', 'class' => 'analytic'],
+                ['label' => 'Wallet', 'url' => '/site/wallet', 'class' => 'wallet'],
+                ['label' => 'Category', 'url' => '/site/category', 'class' => 'category'],
+                ['label' => 'Income', 'url' => '/site/income', 'class' => 'income'],
+                ['label' => 'Outcome', 'url' => '/site/outcome', 'class' => 'outcome'],
+                ['label' => 'Settings', 'url' => '/site/settings', 'class' => 'settings'],
             ]]) ?>
         </nav>
         <div class="logout-block">

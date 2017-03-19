@@ -28,4 +28,31 @@ class AjaxController extends Controller
             return Json::encode($incomes);
         }
     }
+
+
+    public function actionUpdateCategoryName()
+    {
+        if(Yii::$app->request->isAjax){
+            $id = ArrayHelper::getValue(Yii::$app->request->post(), 'id');
+            $name = ArrayHelper::getValue(Yii::$app->request->post(), 'name');
+
+            $category = Category::findOne($id);
+            $category->name = $name;
+            $category->save();
+            return Json::encode(['result' => 'ok']);
+        }
+    }
+
+    public function actionRemoveCategory()
+    {
+        if(Yii::$app->request->isAjax){
+            $id = ArrayHelper::getValue(Yii::$app->request->post(), 'id');
+
+            $category = Category::findOne($id);
+            $category->active = Category::DISACTIVE;
+            $category->save();
+
+            return Json::encode(['result' => 'ok']);
+        }
+    }
 }

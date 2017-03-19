@@ -5,6 +5,7 @@ namespace frontend\components;
 
 use Yii;
 use yii\base\Widget;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
 
@@ -24,12 +25,9 @@ class SidebarWidget extends Widget
     {
         $html = Html::beginTag('ul');
         foreach ($this->items as $item){
-            $options = [
-                'href' => $item["url"],
-            ];
-            $html .= Html::beginTag('li', ['class' => 'social-item-link']);;
-            $html .= Html::beginTag('a', $options);
-            $html .= $item['label'];
+            $html .= Html::beginTag('li', ['class' => ArrayHelper::getValue($item, 'class')]);;
+            $html .= Html::beginTag('a', ['href' => ArrayHelper::getValue($item, 'url')]);
+            $html .= ArrayHelper::getValue($item, 'label');
             $html .= Html::endTag('a');
             $html .= Html::endTag('li');
         }

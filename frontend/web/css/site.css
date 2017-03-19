@@ -1,6 +1,7 @@
 html,
 body {
     height: 100%;
+    font-family: 'Roboto', sans-serif;
 }
 
 #app {
@@ -71,6 +72,47 @@ body {
     list-style: none;
     padding: 0;
     margin: 0;
+}
+
+.sidebar-nav li{
+    position: relative;
+}
+
+.sidebar-nav li:before{
+    content: '';
+    display: block;
+    position: absolute;
+    transform: translateY(-50%);
+    top: 50%;
+    left: 20px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 40px;
+    height: 40px;
+}
+
+.sidebar-nav .analytic:before{
+    background-image: url("../img/analytic.png");
+}
+
+.sidebar-nav .wallet:before{
+    background-image: url("../img/wallet.png");
+}
+
+.sidebar-nav .category:before{
+    background-image: url("../img/price-tag.png");
+}
+
+.sidebar-nav .income:before{
+    background-image: url("../img/money-bag.png");
+}
+
+.sidebar-nav .outcome:before{
+    background-image: url("../img/shopping-cart.png");
+}
+
+.sidebar-nav .settings:before{
+    background-image: url("../img/settings.png");
 }
 
 .sidebar-nav a{
@@ -227,26 +269,4 @@ a.desc:after {
     margin: 0 0 15px 0;
 }
 
-/* align the logout "link" (button in form) of the navbar */
-.nav li > form > button.logout {
-    padding: 15px;
-    border: none;
-}
 
-@media(max-width:767px) {
-    .nav li > form > button.logout {
-        display:block;
-        text-align: left;
-        width: 100%;
-        padding: 10px 15px;
-    }
-}
-
-.nav > li > form > button.logout:focus,
-.nav > li > form > button.logout:hover {
-    text-decoration: none;
-}
-
-.nav > li > form > button.logout:focus {
-    outline: none;
-}

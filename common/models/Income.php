@@ -3,7 +3,7 @@
 
 namespace common\models;
 
-
+use Yii;
 use yii\db\ActiveRecord;
 
 /**
@@ -39,8 +39,27 @@ class Income extends ActiveRecord
         ];
     }
 
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)){
+            if($insert){
+                $this->setAttribute('userId', Yii::$app->getUser()->id);
+                $this->setAttribute('createdAt', date(DATE_ATOM, time()));
+                $this->setAttribute('updatedAt', date(DATE_ATOM, time()));
+            }else{
+                $this->setAttribute('updatedAt', date(DATE_ATOM, time()));
+            }
+            return true;
+        }
+    }
+
     public function getCategory()
     {
         return $this->hasOne(Category::className(), ['id' => 'categoryId']);
+    }
+
+    public function getWallet()
+    {
+        return $this->hasOne(Wallet::className(), ['id' => 'walletId']);
     }
 }

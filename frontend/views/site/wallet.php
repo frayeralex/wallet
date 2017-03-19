@@ -33,7 +33,7 @@ use \yii\bootstrap\ActiveForm;
                                 <span class="glyphicon glyphicon-remove"></span>
                             </button>
                         </tr>
-                    <?php } ?>
+                    <?php }?>
                 </tbody>
             </table>
         </div>

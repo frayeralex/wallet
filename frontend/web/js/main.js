@@ -127,4 +127,60 @@ jQuery(function ($) {
         })
     }
 
+    /**
+     * Category page
+     */
+
+    const categoryItems = $('.category-item');
+    const editModal = $('#editCategory');
+    const updateCategoryBtn = editModal.find('#updateCategory');
+    const removeCategoryBtn = editModal.find('#removeCategory');
+
+    categoryItems.on('click', (event)=>{
+        const categoryItem = $(event.currentTarget);
+        const categoryId = categoryItem.attr('data-catagory-id');
+        const categoryName = categoryItem.find('.name').text();
+
+        editModal.find('input.category-name').val(categoryName);
+        editModal.attr('data-category', categoryId);
+        editModal.modal('show');
+    });
+
+    updateCategoryBtn.on('click', ()=>{
+        const id = editModal.attr('data-category');
+        const name = editModal.find('input.category-name').val();
+        if(!id || !name) return;
+
+        $.ajax({
+            url: '/ajax/update-category-name',
+            type: 'POST',
+            data: {id, name },
+            success: ()=>{
+                $(`[data-catagory-id="${id}"] .name`).text(name);
+                editModal.modal('hide');
+            },
+            error: ()=>{
+                editModal.modal('hide');
+            }
+        })
+    });
+
+    removeCategoryBtn.on('click', ()=>{
+        const id = editModal.attr('data-category');
+        if(!id) return;
+
+        $.ajax({
+            url: '/ajax/remove-category',
+            type: 'POST',
+            data: {id },
+            success: ()=>{
+                $(`[data-catagory-id="${id}"]`).remove();
+                editModal.modal('hide');
+            },
+            error: ()=>{
+                editModal.modal('hide');
+            }
+        })
+    })
+
 })
