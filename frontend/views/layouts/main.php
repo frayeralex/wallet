@@ -1,15 +1,11 @@
 <?php
 
-/* @var $this \yii\web\View */
-/* @var $content string */
-
 use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
+use frontend\components\SidebarWidget;
 use frontend\assets\AppAsset;
-use common\widgets\Alert;
+use frontend\assets\FAAsset;
 
+FAAsset::register($this);
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
@@ -25,44 +21,36 @@ AppAsset::register($this);
 <body>
 <?php $this->beginBody() ?>
 
-<div id="app">
-    <div class="loader">Loading...</div>
-    <?php
-    NavBar::begin([
-        'brandLabel' => 'My Company',
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
-        ],
-    ]);
-    $menuItems = [
-        ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'Wallet', 'url' => ['/site/wallet']],
-        ['label' => 'Category', 'url' => ['/site/category']],
-        ['label' => 'income', 'url' => ['/site/income']],
-    ];
-    if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
-    } else {
-        $menuItems[] = '<li>'
-            . Html::beginForm(['/site/logout'], 'post')
-            . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'btn btn-link logout']
-            )
-            . Html::endForm()
-            . '</li>';
-    }
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => $menuItems,
-    ]);
-    NavBar::end();
-    ?>
-    <div class="container">
-        <?= $content ?>
-    </div>
+<div id="app" class="app">
+    <header class="app-header">
+        <div class="logo">Wallet</div>
+    </header>
+    <aside class="main-sidebar">
+        <div class="user-info">
+            <div class="avatar-wrap">
+                <img src="/img/user.png" alt="">
+            </div>
+            <span class="name">Admin Admin</span>
+        </div>
+        <nav class="sidebar-nav">
+            <?= SidebarWidget::widget(['items' => [
+                ['label' => 'Analytic', 'url' => '/site/index', 'class' => 'analytic'],
+                ['label' => 'Wallet', 'url' => '/site/wallet', 'class' => 'wallet'],
+                ['label' => 'Category', 'url' => '/site/category', 'class' => 'category'],
+                ['label' => 'Income', 'url' => '/site/income', 'class' => 'income'],
+                ['label' => 'Outcome', 'url' => '/site/outcome', 'class' => 'outcome'],
+                ['label' => 'Settings', 'url' => '/site/settings', 'class' => 'settings'],
+            ]]) ?>
+        </nav>
+        <div class="logout-block">
+            <button type="button" class="logout-btn">Exit</button>
+        </div>
+    </aside>
+    <main class="content">
+        <div class="content-area">
+            <?= $content ?>
+        </div>
+    </main>
 </div>
 
 

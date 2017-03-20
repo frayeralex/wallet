@@ -1,19 +1,202 @@
 html,
 body {
     height: 100%;
+    font-family: 'Roboto', sans-serif;
 }
 
 #app {
-    min-height: 100%;
-    height: auto;
-    margin: 0 auto -60px;
-    padding: 0 0 60px;
+    height: 100%;
+}
+.flex{
+    display: flex;
 }
 
-#app > .container {
+.app .content{
+    background: #edf0f5;
+    min-height: 100%;
+    padding: 100px 15px 15px 315px;
+}
+.app .content-area{
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    box-shadow: 0 0 7px rgba(0, 0, 0, 0.1);
+    padding: 20px 15px;
+}
+
+.app > .container {
     padding: 70px 15px 20px;
 }
 
+.app-header{
+    height: 85px;
+    background-color: #353058;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+.main-sidebar{
+    width: 300px;
+    position: fixed;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    left: 0;
+    top: 0;
+    bottom: 0;
+    padding-top: 85px;
+    background-color: #fff;
+    z-index: 50;
+}
+
+.main-sidebar .user-info{
+    display: flex;
+    align-items: center;
+    padding: 50px 30px;
+    border-bottom: 2px solid #edf0f5;
+}
+
+.main-sidebar .name{
+    color: #6a6c6f;
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 31px;
+}
+
+.sidebar-nav{
+    padding-top: 10px;
+}
+
+.sidebar-nav ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-nav li{
+    position: relative;
+}
+
+.sidebar-nav li:before{
+    content: '';
+    display: block;
+    position: absolute;
+    transform: translateY(-50%);
+    top: 50%;
+    left: 20px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 40px;
+    height: 40px;
+}
+
+.sidebar-nav .analytic:before{
+    background-image: url("../img/analytic.png");
+}
+
+.sidebar-nav .wallet:before{
+    background-image: url("../img/wallet.png");
+}
+
+.sidebar-nav .category:before{
+    background-image: url("../img/price-tag.png");
+}
+
+.sidebar-nav .income:before{
+    background-image: url("../img/money-bag.png");
+}
+
+.sidebar-nav .outcome:before{
+    background-image: url("../img/shopping-cart.png");
+}
+
+.sidebar-nav .settings:before{
+    background-image: url("../img/settings.png");
+}
+
+.sidebar-nav a{
+    display: block;
+    height: 80px;
+    font-size: 23px;
+    font-weight: 400;
+    line-height: 80px;
+    color: #7f96a3;
+    text-decoration: none;
+    padding-left: 80px;
+}
+
+.sidebar-nav .active{
+    background-color: #eff1f4;
+}
+
+
+.sidebar-nav a:hover{
+    background-color: #eff1f4;
+    color: #34383c;
+}
+
+.main-sidebar .logout-block{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    border-top: 2px solid #edf0f5;
+}
+
+.main-sidebar .logout-btn{
+    color: #7f96a3;
+    font-size: 23px;
+    font-weight: 400;
+    line-height: 80px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border: none;
+    background: transparent;
+    padding-left: 80px;
+    display: block;
+    text-align: left;
+    width: 100%;
+}
+
+.main-sidebar .logout-btn:hover{
+    background-color: #eff1f4;
+    color: #34383c;
+    cursor: pointer;
+}
+
+.logout-block:before{
+    content: '';
+    display: block;
+    background: url("../img/logout.png") no-repeat;
+    width: 31px;
+    height: 34px;
+    position: absolute;
+    top: 50%;
+    left: 30px;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+@media (max-height: 700px) {
+    .main-sidebar .user-info{
+        padding: 20px 30px;
+    }
+    .sidebar-nav a,
+    .main-sidebar .logout-btn{
+        height: 50px;
+        line-height: 50px;
+        font-size: 18px;
+    }
+    .sidebar-nav li:before,
+    .logout-block:before{
+        width: 30px;
+        height: 30px;
+    }
+}
 .activeLoader .loader{
     display: none;
     position: fixed;
@@ -23,7 +206,7 @@ body {
     color: red;
 }
 
-#app.activeLoader .loader{
+.app.activeLoader .loader{
     display: block;
 }
 .footer {
@@ -107,26 +290,41 @@ a.desc:after {
     margin: 0 0 15px 0;
 }
 
-/* align the logout "link" (button in form) of the navbar */
-.nav li > form > button.logout {
-    padding: 15px;
-    border: none;
+/**
+ * CSS loader
+ */
+
+.loader {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+}
+.loader.light{
+    opacity: .6;
 }
 
-@media(max-width:767px) {
-    .nav li > form > button.logout {
-        display:block;
-        text-align: left;
-        width: 100%;
-        padding: 10px 15px;
-    }
+.loader.fast{
+    -webkit-animation: spin 1s linear infinite;
+    animation: spin 1s linear infinite;
 }
 
-.nav > li > form > button.logout:focus,
-.nav > li > form > button.logout:hover {
-    text-decoration: none;
+.loader.slow{
+    -webkit-animation: spin 3s linear infinite;
+    animation: spin 3s linear infinite;
 }
 
-.nav > li > form > button.logout:focus {
-    outline: none;
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
 }
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+

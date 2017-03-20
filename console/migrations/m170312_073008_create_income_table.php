@@ -17,7 +17,7 @@ class m170312_073008_create_income_table extends Migration
             'title' => $this->string(50),
             'createdAt' => $this->datetime()->notNull(),
             'updatedAt' => $this->datetime(),
-            'value' => $this->integer()->notNull(),
+            'value' => $this->double()->notNull(),
         ]);
     }
 

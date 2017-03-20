@@ -3,6 +3,7 @@
 
 namespace common\models;
 
+use Yii;
 use yii\db\ActiveRecord;
 
 /**
@@ -13,13 +14,15 @@ use yii\db\ActiveRecord;
  * @property integer $id
  * @property string $name
  * @property string $currency
- * @property integer $value
+ * @property double $value
  * @property integer $createdAt
  * @property integer $updatedAt
  * @property integer $userId
  */
 class Wallet extends ActiveRecord
 {
+    const ACTIVE = 1;
+    const DISACTIVE = 0;
     const CURRENCIES = ["UA", "USD", "EUR"];
 
 
@@ -35,11 +38,38 @@ class Wallet extends ActiveRecord
             ['name', 'trim'],
             ['name', 'string', 'min' => 2, 'max' => 50],
 
+            ['active', 'default', 'value' => self::ACTIVE],
+            ['active', 'in', 'range' => [self::ACTIVE, self::DISACTIVE]],
+
             ['currency', 'default', 'value' => self::CURRENCIES[0]],
             ['currency', 'in', 'range' => self::CURRENCIES],
 
-            ['value', 'number'],
+            ['value', 'double'],
             ['value', 'default', 'value' => 0],
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)){
+            if($insert){
+                $this->setAttribute('userId', Yii::$app->getUser()->id);
+                $this->setAttribute('createdAt', date(DATE_ATOM, time()));
+                $this->setAttribute('updatedAt', date(DATE_ATOM, time()));
+            }else{
+                $this->setAttribute('updatedAt', date(DATE_ATOM, time()));
+            }
+            return true;
+        }
+    }
+
+    public function getIncomes()
+    {
+        return $this->hasMany(Income::className(), ['walletId' => 'id']);
+    }
+
+    public function getOutcomes()
+    {
+        return $this->hasMany(Outcome::className(), ['walletId' => 'id']);
     }
 }

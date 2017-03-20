@@ -3,7 +3,7 @@
 
 namespace common\models;
 
-
+use Yii;
 use yii\db\ActiveRecord;
 
 /**
@@ -14,7 +14,7 @@ use yii\db\ActiveRecord;
  *
  * @property integer $id
  * @property string $title
- * @property integer $value
+ * @property double $value
  * @property integer $createdAt
  * @property integer $updatedAt
  * @property integer $userId
@@ -34,11 +34,32 @@ class Income extends ActiveRecord
             ['title', 'required'],
             ['title', 'trim'],
             ['title', 'string', 'min' => 2, 'max' => 50],
+            ['value', 'required'],
+            ['value', 'double'],
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)){
+            if($insert){
+                $this->setAttribute('userId', Yii::$app->getUser()->id);
+                $this->setAttribute('createdAt', date(DATE_ATOM, time()));
+                $this->setAttribute('updatedAt', date(DATE_ATOM, time()));
+            }else{
+                $this->setAttribute('updatedAt', date(DATE_ATOM, time()));
+            }
+            return true;
+        }
     }
 
     public function getCategory()
     {
         return $this->hasOne(Category::className(), ['id' => 'categoryId']);
+    }
+
+    public function getWallet()
+    {
+        return $this->hasOne(Wallet::className(), ['id' => 'walletId']);
     }
 }
