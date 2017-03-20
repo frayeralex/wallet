@@ -18,6 +18,7 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
         'https://www.gstatic.com/charts/loader.js',
+        'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.0/moment.min.js',
         'js/main.js'
     ];
     public $depends = [

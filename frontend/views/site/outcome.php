@@ -1,13 +1,15 @@
 <?php
 
-use yii\helpers\Html;
-use yii\helpers\ArrayHelper;
+use yii\helpers\Html;;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 
 ?>
 <div class="outcome-page">
-    <h1>Outcomes</h1>
+    <h1>
+        <?= Yii::t('app', 'Outcomes') ?>
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addOutcome"><?= Yii::t('app', 'Add +') ?></button>
+    </h1>
 
     <?php if(!!count($wallets) && !!count($categories)){ ?>
     <div class="row">
@@ -15,21 +17,21 @@ use yii\helpers\Url;
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>Title</th>
-                    <th>Category</th>
-                    <th>Wallet</th>
-                    <th>Actual value</th>
-                    <th>Create</th>
+                    <th><?= Yii::t('app', 'Title') ?></th>
+                    <th><?= Yii::t('app', 'Category') ?></th>
+                    <th><?= Yii::t('app', 'Wallet') ?></th>
+                    <th><?= Yii::t('app', 'Actual value') ?></th>
+                    <th><?= Yii::t('app', 'Create') ?></th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php  foreach ($transactions as $item){?>
-                    <tr class="outcome-item" data-outcome-id="<?= $item->id?>">
-                        <td><?= Html::encode($item->title) ?></td>
-                        <td><?= Html::encode($item->category->name) ?></td>
-                        <td><?= Html::encode($item->wallet->name) ?></td>
-                        <td><?= Html::encode($item->value) ?> (<?= Html::encode($item->wallet->currency) ?>)</td>
-                        <td><?= Yii::$app->formatter->asDate($item->createdAt) ?></td>
+                    <tr class="outcome-item" data-id="<?= $item->id?>">
+                        <td class="title"><?= Html::encode($item->title) ?></td>
+                        <td class="category"><?= Html::encode($item->category->name) ?></td>
+                        <td class="wallet"><?= Html::encode($item->wallet->name) ?> (<?= Html::encode($item->wallet->currency) ?>)</td>
+                        <td class="value"><?= Html::encode($item->value) ?> </td>
+                        <td class="date" data-date="<?=$item->createdAt?>"><?= Yii::$app->formatter->asDate($item->createdAt) ?></td>
                     </tr>
                 <?php }?>
                 </tbody>
@@ -37,18 +39,13 @@ use yii\helpers\Url;
         </div>
     </div>
 
-    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addOutcome">Add new</button>
-
     <!-- Modal -->
     <div class="modal fade" id="addOutcome" role="dialog">
         <div class="modal-dialog">
-
-            <!-- Modal content-->
             <div class="modal-content">
-
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Add income category</h4>
+                    <h4 class="modal-title"><?= Yii::t('app', 'Add outcome') ?></h4>
                 </div>
                 <?php $form = ActiveForm::begin(['id' => 'add-outcome']); ?>
                 <div class="modal-body">
@@ -57,37 +54,70 @@ use yii\helpers\Url;
                     <?= $form->field($model, 'value')->textInput(['type' => 'number', 'step'=> '0.01']) ?>
 
                     <div class="form-group">
-                        <label>Category</label>
+                        <label><?= Yii::t('app', 'Category') ?></label>
                         <?= Html::activeDropDownList($model, 'categoryId', $categories, ['class' => 'form-control']) ?>
                     </div>
 
                     <div class="form-group">
-                        <label>Wallet</label>
+                        <label><?= Yii::t('app', 'Wallet') ?></label>
                         <?= Html::activeDropDownList($model, 'walletId', $wallets, ['class' => 'form-control']) ?>
                     </div>
-
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Add category</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success"><?= Yii::t('app', 'Add') ?></button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><?= Yii::t('app', 'Close') ?></button>
                 </div>
                 <?php ActiveForm::end(); ?>
             </div>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="editIncome" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><?= Yii::t('app', 'Edit outcome')?></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label><?= Yii::t('app', 'Title') ?></label>
+                            <input type="text" class="form-control title">
+                        </div>
+                        <div class="form-group">
+                            <label><?= Yii::t('app', 'Value') ?></label>
+                            <input type="number" class="form-control value" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label><?= Yii::t('app', 'Date') ?></label>
+                            <input type="date" class="form-control date">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" id="updateOutcome"><?= Yii::t('app', 'Update') ?></button>
+                        <button type="button" class="btn btn-danger" id="removeOutcome"><?= Yii::t('app', 'Remove') ?></button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><?= Yii::t('app', 'Close') ?></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <?php } if(!count($wallets)) { ?>
-        <div class="alert alert-warning" role="alert">
-            <?= Yii::t('app', 'Firstly you must add wallet')?>
-            <a href="<?= Url::toRoute(["/site/wallet"])?>">
-                <?= Yii::t('app', 'Please, go to wallet page')?>
-            </a>
-        </div>
+    <div class="alert alert-warning" role="alert">
+        <?= Yii::t('app', 'Firstly you must add wallet')?>
+        <a href="<?= Url::toRoute(["/site/wallet"])?>">
+            <?= Yii::t('app', 'Please, go to wallet page')?>
+        </a>
+    </div>
     <?php } if (!count($categories)) {?>
-        <div class="alert alert-warning" role="alert">
-            <?= Yii::t('app', 'Firstly you must add outcome category')?>
-            <a href="<?= Url::toRoute(["/site/category"])?>">
-                <?= Yii::t('app', 'Please, go to category page')?>
-            </a>
-        </div>
+    <div class="alert alert-warning" role="alert">
+        <?= Yii::t('app', 'Firstly you must add outcome category')?>
+        <a href="<?= Url::toRoute(["/site/category"])?>">
+            <?= Yii::t('app', 'Please, go to category page')?>
+        </a>
+    </div>
     <?php } ?>
 </div>

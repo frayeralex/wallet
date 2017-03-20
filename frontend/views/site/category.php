@@ -8,7 +8,7 @@ use \yii\bootstrap\ActiveForm;
 ?>
 <div class="category-page">
     <h1>
-        Category page
+        <th><?= Yii::t('app', 'Category page') ?></th>
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCategory">Add category</button>
     </h1>
 
@@ -18,14 +18,14 @@ use \yii\bootstrap\ActiveForm;
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Create</th>
+                    <th><?= Yii::t('app', 'Name') ?></th>
+                    <th><?= Yii::t('app', 'Created') ?></th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php  foreach ($income as $item){?>
                 <tr class="category-item" data-catagory-id="<?= $item->id ?>">
-                    <td class="name"><?= $item->name ?></td>
+                    <td class="name"><?= Html::decode($item->name) ?></td>
                     <td><?= Yii::$app->formatter->asDate($item->createdAt) ?></td>
                 </tr>
                 </tbody>
@@ -37,8 +37,8 @@ use \yii\bootstrap\ActiveForm;
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Create</th>
+                    <th><?= Yii::t('app', 'Name') ?></th>
+                    <th><?= Yii::t('app', 'Created') ?></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -56,13 +56,10 @@ use \yii\bootstrap\ActiveForm;
     <!-- Modal -->
     <div class="modal fade" id="addCategory" role="dialog">
         <div class="modal-dialog">
-
-            <!-- Modal content-->
             <div class="modal-content">
-
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"><?= Yii::t('app', 'Add new category')?></h4>
+                    <h4 class="modal-title"><?= Yii::t('app', 'Add category')?></h4>
                 </div>
                 <?php $form = ActiveForm::begin(['id' => 'add-category']); ?>
                 <div class="modal-body">
@@ -74,8 +71,8 @@ use \yii\bootstrap\ActiveForm;
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Add category</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success"><?= Yii::t('app', 'Add category') ?></button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><?= Yii::t('app', 'Close') ?></button>
                 </div>
                 <?php ActiveForm::end(); ?>
             </div>
@@ -85,13 +82,10 @@ use \yii\bootstrap\ActiveForm;
     <!-- Modal -->
     <div class="modal fade" id="editCategory" role="dialog">
         <div class="modal-dialog">
-
-            <!-- Modal content-->
             <div class="modal-content">
-
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"><?= Yii::t('app', 'Edit category')?> <span class="category-name"></span></h4>
+                    <h4 class="modal-title"><?= Yii::t('app', 'Edit category')?></h4>
                 </div>
                 <div class="modal-body">
                     <div class="modal-body">
@@ -101,9 +95,9 @@ use \yii\bootstrap\ActiveForm;
                         </div>
                     </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" id="updateCategory">Update</button>
-                    <button type="button" class="btn btn-danger" id="removeCategory">Remove</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" id="updateCategory"><?= Yii::t('app', 'Update') ?></button>
+                    <button type="button" class="btn btn-danger" id="removeCategory"><?= Yii::t('app', 'Remove') ?></button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><?= Yii::t('app', 'Close') ?></button>
                 </div>
             </div>
         </div>

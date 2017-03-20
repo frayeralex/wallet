@@ -7,6 +7,7 @@ use Yii;
 use yii\base\Widget;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 
 class SidebarWidget extends Widget
@@ -25,7 +26,9 @@ class SidebarWidget extends Widget
     {
         $html = Html::beginTag('ul');
         foreach ($this->items as $item){
-            $html .= Html::beginTag('li', ['class' => ArrayHelper::getValue($item, 'class')]);;
+            $activeClass = ArrayHelper::getValue($item, 'url') === Url::current() ? ' active' : '';
+
+            $html .= Html::beginTag('li', ['class' => ArrayHelper::getValue($item, 'class') . $activeClass]);
             $html .= Html::beginTag('a', ['href' => ArrayHelper::getValue($item, 'url')]);
             $html .= ArrayHelper::getValue($item, 'label');
             $html .= Html::endTag('a');

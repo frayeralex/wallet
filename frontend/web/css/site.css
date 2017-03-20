@@ -120,11 +120,17 @@ body {
     height: 80px;
     font-size: 23px;
     font-weight: 400;
-    line-height: 84px;
+    line-height: 80px;
     color: #7f96a3;
     text-decoration: none;
     padding-left: 80px;
 }
+
+.sidebar-nav .active{
+    background-color: #eff1f4;
+}
+
+
 .sidebar-nav a:hover{
     background-color: #eff1f4;
     color: #34383c;
@@ -166,7 +172,7 @@ body {
 .logout-block:before{
     content: '';
     display: block;
-    background: url("/img/logout.png") no-repeat;
+    background: url("../img/logout.png") no-repeat;
     width: 31px;
     height: 34px;
     position: absolute;
@@ -175,7 +181,22 @@ body {
     transform: translateY(-50%);
     z-index: 10;
 }
-
+@media (max-height: 700px) {
+    .main-sidebar .user-info{
+        padding: 20px 30px;
+    }
+    .sidebar-nav a,
+    .main-sidebar .logout-btn{
+        height: 50px;
+        line-height: 50px;
+        font-size: 18px;
+    }
+    .sidebar-nav li:before,
+    .logout-block:before{
+        width: 30px;
+        height: 30px;
+    }
+}
 .activeLoader .loader{
     display: none;
     position: fixed;
@@ -267,6 +288,43 @@ a.desc:after {
     border-left: 3px solid #eed3d7;
     padding: 10px 20px;
     margin: 0 0 15px 0;
+}
+
+/**
+ * CSS loader
+ */
+
+.loader {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+}
+.loader.light{
+    opacity: .6;
+}
+
+.loader.fast{
+    -webkit-animation: spin 1s linear infinite;
+    animation: spin 1s linear infinite;
+}
+
+.loader.slow{
+    -webkit-animation: spin 3s linear infinite;
+    animation: spin 3s linear infinite;
+}
+
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 

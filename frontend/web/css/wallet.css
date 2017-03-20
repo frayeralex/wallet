@@ -18,9 +18,45 @@
 }
 
 /**
+ * Income page
+ */
+
+.income-page .income-item:hover{
+    cursor: pointer;
+}
+
+/**
  * Outcome page
  */
 
 .outcome-page .outcome-item:hover{
     cursor: pointer;
+}
+
+
+/**
+ * Analytic page
+ */
+
+.analytic-page .chart-grid{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.chart-grid .flex-item{
+    width: 300px;
+    flex-grow: 1;
+}
+
+.chart-grid .flex-item.big{
+    width: 100%;
+    flex-grow: 1;
+}
+.chart-grid .chart-wrap{
+    width: 100%;
+    height: 400px;
+    display: flex;
+}
+.chart-grid .chart-wrap .loader{
+    margin: auto;
 }
