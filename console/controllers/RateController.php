@@ -4,11 +4,9 @@
 namespace console\controllers;
 
 use common\models\Wallet;
-use console\models\Rate;
+use common\models\Rate;
 use yii\console\Controller;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Console;
-use yii\helpers\Json;
 use yii\httpclient\Client;
 
 

@@ -26,6 +26,54 @@ jQuery(function ($) {
         )
     };
 
+    const ratesLinearChart = document.querySelector('#ratesLinearChart');
+
+    if(ratesLinearChart){
+        $.ajax({
+            url: '/ajax/get-rates',
+            type: 'POST',
+            success: (response)=>{
+                const rates = JSON.parse(response)
+                    .map(rate=>{
+                        rate.value = parseFloat(rate.value);
+                        return rate;
+                    });
+                const dates = rates.reduce((dates,item)=>{
+                    const date = item.exchangedate;
+                    if(!dates.some(d=>d===date)) dates.push(date);
+                    return dates;
+                },[])
+                .sort();
+                const currencies = ['USD', 'RUB', 'EUR'];
+                const rows = [['Date', ...currencies]];
+
+                dates.forEach(date=>{
+                    const row = [date];
+                    rates.forEach(rate=>{
+                        if(rate.exchangedate === date){
+                            if(rate.cc === currencies[0]) row[1] = rate.value;
+                            if(rate.cc === currencies[1]) row[2] = rate.value;
+                            if(rate.cc === currencies[2]) row[3] = rate.value;
+                        }
+                    });
+                    rows.push(row);
+                });
+
+                const options = {
+                    title: 'Company Performance',
+                    curveType: 'function',
+                    legend: { position: 'bottom' }
+                };
+
+                console.log(rows)
+
+                pendingGoogle(()=>drawLinearChart(rows,options,ratesLinearChart))
+            }
+        })
+    }
+
+
+
     const app = new App('#app');
 
     /**
@@ -78,6 +126,11 @@ jQuery(function ($) {
     function drawPieChart(rows, options, domElement) {
         const data = google.visualization.arrayToDataTable(rows);
         const chart = new google.visualization.PieChart(domElement);
+        chart.draw(data, options);
+    }
+    function drawLinearChart(rows, options, domElement) {
+        const data = google.visualization.arrayToDataTable(rows);
+        const chart = new google.visualization.LineChart(domElement);
         chart.draw(data, options);
     }
 

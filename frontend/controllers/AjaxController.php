@@ -6,6 +6,7 @@ namespace frontend\controllers;
 use common\models\Category;
 use common\models\Income;
 use common\models\Outcome;
+use common\models\Rate;
 use common\models\Wallet;
 use frontend\components\Transactor;
 use yii\helpers\ArrayHelper;
@@ -176,6 +177,17 @@ class AjaxController extends Controller
             Transactor::removeIncome($income->walletId, $income->categoryId, $income->value);
             $income->delete();
             return Json::encode(['result' => 'ok']);
+        }
+    }
+
+    public function actionGetRates()
+    {
+        if(Yii::$app->request->isAjax){
+            $rates = Rate::find()
+                ->asArray()
+                ->all();
+
+            return Json::encode($rates);
         }
     }
 
