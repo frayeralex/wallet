@@ -1,37 +1,33 @@
 <?php
 
+use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
 $this->title = 'Login';
 ?>
-<div class="site-login">
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p><?= \Yii::t('app', 'Please fill out the following fields to login:')?></p>
-
+<div class="login-wrap">
+    <h1>
+        <span><?= Yii::t('app', 'Welcome to wallet') ?></span>
+    </h1>
     <div class="row">
         <div class="col-lg-5">
             <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
 
-                <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+                <?= $form->field($model, 'username') ?>
 
                 <?= $form->field($model, 'password')->passwordInput() ?>
 
                 <?= $form->field($model, 'rememberMe')->checkbox() ?>
 
-                <div style="color:#999;margin:1em 0">
-                    If you forgot your password you can <?= Html::a('reset it', ['authorisation/request-password-reset']) ?>.
-                </div>
-
                 <div class="form-group">
-                    <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                    <button type="submit" class="btn btn-success">
+                        <?= Yii::t('app', 'Login') ?>
+                    </button>
+                    <a href="<?= Url::to(['authorisation/signup'])?>" class="btn btn-primary">
+                        <?= Yii::t('app', 'Registration') ?>
+                    </a>
                 </div>
-
-                <div style="color:#999;margin:1em 0">
-                    If you forgot your password you can <?= Html::a('Signup', ['authorisation/signup']) ?>.
-                </div>
-
             <?php ActiveForm::end(); ?>
         </div>
     </div>

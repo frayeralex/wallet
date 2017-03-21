@@ -73,7 +73,7 @@ use yii\helpers\Url;
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="editIncome" role="dialog">
+    <div class="modal fade" id="editOutcome" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
