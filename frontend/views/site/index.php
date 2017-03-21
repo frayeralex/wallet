@@ -29,5 +29,11 @@ $this->title = 'Wallet';
                 <div class="loader fast light"></div>
             </div>
         </section>
+        <section class="flex-item big">
+            <h2><?= Yii::t('app', 'Rates') ?></h2>
+            <div id="ratesLinearChart" class="chart-wrap">
+                <div class="loader fast light"></div>
+            </div>
+        </section>
     </div>
 </div>

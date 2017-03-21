@@ -23,7 +23,7 @@ class Wallet extends ActiveRecord
 {
     const ACTIVE = 1;
     const DISACTIVE = 0;
-    const CURRENCIES = ["UA", "USD", "EUR"];
+    const CURRENCIES = ["UAH", "USD", "EUR", "RUB"];
 
 
     public static function tableName()

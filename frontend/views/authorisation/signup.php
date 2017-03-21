@@ -1,17 +1,12 @@
 <?php
 
-/* @var $this yii\web\View */
-/* @var $form yii\bootstrap\ActiveForm */
-/* @var $model \frontend\models\SignupForm */
-
-use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
 
 ?>
-<div class="site-signup">
+<div class="login-wrap">
 
-    <p>Please fill out the following fields to signup:</p>
-
+    <h1><?= Yii::t('app', 'Registration form') ?></h1>
     <div class="row">
         <div class="col-lg-5">
             <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
@@ -28,13 +23,15 @@ use yii\bootstrap\ActiveForm;
 
                 <?= $form->field($model, 'password')->passwordInput() ?>
 
-                <div class="form-group">
-                    <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
-                </div>
 
-                <div style="color:#999;margin:1em 0">
-                    If you forgot your password you can <?= Html::a('Signup', ['authorisation']) ?>.
-                </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">
+                    <?= Yii::t('app', 'Submit') ?>
+                </button>
+                <a href="<?= Url::to(['authorisation/index'])?>" class="btn btn-primary">
+                    <?= Yii::t('app', 'Login') ?>
+                </a>
+            </div>
 
             <?php ActiveForm::end(); ?>
         </div>
