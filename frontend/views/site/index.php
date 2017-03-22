@@ -2,11 +2,11 @@
 
 use yii\helpers\Html;
 
-$this->title = 'Wallet';
+$this->title = 'Wallet analytic';
 
 ?>
 <div class="analytic-page">
-    <h1>Hello world</h1>
+    <h1><?= Yii::t('app', 'Analytic') ?></h1>
     <div class="chart-grid">
         <section class="flex-item">
             <h2><?= Yii::t('app', 'Incomes') ?></h2>
