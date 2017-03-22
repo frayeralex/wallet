@@ -56,6 +56,8 @@
     width: 100%;
     height: 400px;
     display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .chart-grid .chart-wrap .loader{
     margin: auto;
