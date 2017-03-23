@@ -53,6 +53,9 @@ body {
     left: 0;
     width: 100%;
     z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .main-sidebar{
@@ -89,6 +92,10 @@ body {
     padding: 50px 30px;
     border-bottom: 2px solid #edf0f5;
     flex-shrink: 0;
+}
+
+.user-info .name{
+    padding: 0 15px;
 }
 
 .main-sidebar .name{
@@ -305,4 +312,41 @@ body {
     100% { transform: rotate(360deg); }
 }
 
+/*
+ * Declaration search
+ */
+
+.search-results{
+    transition: .3s;
+    background: #fff;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.global-search{
+    position: relative;
+}
+.global-search .search-results{
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    left: 0;
+    max-height: 500px;
+    overflow-y: scroll;
+}
+.global-search .loader{
+    width: 20px;
+    height: 20px;
+    border: 4px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 4px solid #3498db;
+    display: none;
+    position: absolute;
+    right: -100%;
+    bottom: 0;
+}
+.global-search.loading .loader{
+    display: block;
+}
 

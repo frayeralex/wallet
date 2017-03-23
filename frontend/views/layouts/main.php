@@ -7,6 +7,7 @@ use frontend\assets\FAAsset;
 
 FAAsset::register($this);
 AppAsset::register($this);
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -25,13 +26,21 @@ AppAsset::register($this);
 <div id="app" class="app">
     <header class="app-header">
         <div class="logo">Wallet</div>
+        <div class="global-search" id="global-search">
+            <div class="input-wrap">
+                <input type="search">
+                <div class="loader"></div>
+            </div>
+            <ul class="search-results" id="search-results">
+            </ul>
+        </div>
     </header>
     <aside class="main-sidebar">
         <div class="user-info">
             <div class="avatar-wrap">
                 <img src="/img/user.png" alt="">
             </div>
-            <span class="name">Admin Admin</span>
+            <span class="name">User</span>
         </div>
         <nav class="sidebar-nav">
             <?= SidebarWidget::widget(['items' => [
