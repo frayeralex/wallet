@@ -62,3 +62,49 @@
 .chart-grid .chart-wrap .loader{
     margin: auto;
 }
+
+/*
+ * Settings page
+ */
+
+.settings-wrap{
+    display: flex;
+}
+
+.settings-wrap .info-form{
+    width: 100px;
+    flex-grow: 1;
+}
+.settings-wrap .avatar-form{
+    width: 100px;
+    flex-grow: 1;
+}
+
+.avatar-form .crop-wrap{
+    width: 250px;
+    height: 250px;
+    position: relative;
+    overflow: hidden;
+    display: none;
+}
+
+.avatar-form .preview{
+    border-radius: 50%;
+    width: 85px;
+    height: 85px;
+    overflow: hidden;
+}
+.preview span{
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.avatar-form input[type="file"]{
+    display: none;
+}
+.crop-wrap > img{
+    display: block;
+    width: 100%;
+    height: auto;
+}

@@ -38,7 +38,7 @@ AppAsset::register($this);
     <aside class="main-sidebar">
         <div class="user-info">
             <div class="avatar-wrap">
-                <img src="/img/user.png" alt="">
+                <img src="/img/user.png" id="avatar" alt="avatar">
             </div>
             <span class="name">User</span>
         </div>

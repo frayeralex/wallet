@@ -27,6 +27,11 @@ return [
         'transactor' => [
             'class' => 'frontend\components\Transactor'
         ],
+        's3' => [
+            'class' => 'frontend\components\S3',
+            'accessKey' => 'AKIAJOZHKEAIFV4XTBJA',
+            'secretKey' => '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'
+        ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [

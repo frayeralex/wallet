@@ -551,7 +551,6 @@ jQuery(function ($) {
                 const result = JSON.parse(response);
                 renderResultList(result, searchResult);
                 searchComponent.removeClass('loading');
-                console.log("result", result)
             },
             error: (err)=>{
                 searchComponent.removeClass('loading');

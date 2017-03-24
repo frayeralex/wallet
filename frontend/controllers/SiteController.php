@@ -1,6 +1,8 @@
 <?php
 namespace frontend\controllers;
 
+use Aws\S3\Exception\S3Exception;
+use Aws\S3\S3Client;
 use Yii;
 use common\models\User;
 use common\models\Category;
@@ -8,11 +10,12 @@ use common\models\Income;
 use common\models\Outcome;
 use frontend\components\Transactor;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-
 use common\models\Wallet;
+use yii\web\UploadedFile;
 
 /**
  * Site controller
@@ -242,6 +245,47 @@ class SiteController extends Controller
     {
         $model = User::findOne(Yii::$app->user->id);
 
+        if(Yii::$app->request->isPost || Yii::$app->request->isAjax){
+
+            $file = UploadedFile::getInstanceByName('file');
+
+            $name = $file->baseName;
+            $extension = explode('/',$file->type);
+            $extension = strtolower(end($extension));
+
+            $key = md5(uniqid());
+            $tmpFileName = "{$key}.{$extension}";
+            $tmpFilePath = "uploads/{$tmpFileName}";
+
+            $file->saveAs($tmpFilePath, true);
+
+            $client = new S3Client([
+                'credentials' => [
+                    'key' => 'AKIAJOZHKEAIFV4XTBJA',
+                    'secret' => '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',
+                ],
+                'region' => 'eu-central-1',
+                'version' => 'latest'
+            ]);
+
+            try{
+                $client->putObject([
+                    'Bucket' => 'raccon.wallet',
+                    'Key' => "uploads/$tmpFileName",
+                    'Body' => fopen($tmpFilePath, 'r'),
+                    'ACL' => 'public-read'
+                ]);
+//                unlink($tmpFilePath);
+
+            }catch (S3Exception $e){
+                die("Error uploading file {$e}");
+            }
+
+            $publicUrl = $client->getObjectUrl('raccon.wallet',"uploads/{$name}.{$extension}");
+
+            return Json::encode(['url' => $publicUrl]);
+
+        }
         return $this->render('settings', [
             'model' => $model,
         ]);
