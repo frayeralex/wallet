@@ -25,7 +25,7 @@ jQuery(function ($) {
     });
 
     let cropper = new Cropper(image, {
-        preview: '.preview span',
+        preview: '.preview',
         background: false,
         autoCropArea: 0.9,
     });
@@ -34,6 +34,7 @@ jQuery(function ($) {
         cropper.getCroppedCanvas().toBlob(blob=>{
             const formData = new FormData;
             formData.append('file', blob);
+
             $.ajax({
                 url: '/site/settings',
                 method: 'POST',
@@ -41,13 +42,16 @@ jQuery(function ($) {
                 processData: false,
                 contentType: false,
                 success:(res)=>{
-                    console.log("success")
+                    cropArea.fadeOut();
+                    console.log("success", res)
                 },
                 error: (err)=>{
-                    console.log("err")
+                    cropArea.fadeOut();
+                    console.log("err", err)
                 }
             })
         })
-    })
+    });
+
     console.log("settings page")
 });

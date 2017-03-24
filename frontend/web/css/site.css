@@ -97,12 +97,12 @@ body {
     width: 85px;
     height: 85px;
     overflow: hidden;
+    border-radius: 50%;
 }
 
 .avatar-wrap > img{
     display: block;
-    width: 100%;
-    height: auto;
+    height: 100%;
 }
 .user-info .name{
     padding: 0 15px;

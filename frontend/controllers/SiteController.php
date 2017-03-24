@@ -1,8 +1,7 @@
 <?php
 namespace frontend\controllers;
 
-use Aws\S3\Exception\S3Exception;
-use Aws\S3\S3Client;
+
 use Yii;
 use common\models\User;
 use common\models\Category;
@@ -22,6 +21,7 @@ use yii\web\UploadedFile;
  */
 class SiteController extends Controller
 {
+    public $data = "fooo";
     /**
      * @inheritdoc
      */
@@ -243,51 +243,38 @@ class SiteController extends Controller
 
     public function actionSettings ()
     {
-        $model = User::findOne(Yii::$app->user->id);
+        $user = User::findOne(Yii::$app->user->id);
 
-        if(Yii::$app->request->isPost || Yii::$app->request->isAjax){
+        if(Yii::$app->request->isAjax){
 
             $file = UploadedFile::getInstanceByName('file');
 
-            $name = $file->baseName;
             $extension = explode('/',$file->type);
             $extension = strtolower(end($extension));
-
             $key = md5(uniqid());
-            $tmpFileName = "{$key}.{$extension}";
-            $tmpFilePath = "uploads/{$tmpFileName}";
+            $fileName = "{$key}.{$extension}";
 
-            $file->saveAs($tmpFilePath, true);
-
-            $client = new S3Client([
-                'credentials' => [
-                    'key' => 'AKIAJOZHKEAIFV4XTBJA',
-                    'secret' => '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',
-                ],
-                'region' => 'eu-central-1',
-                'version' => 'latest'
-            ]);
-
-            try{
-                $client->putObject([
-                    'Bucket' => 'raccon.wallet',
-                    'Key' => "uploads/$tmpFileName",
-                    'Body' => fopen($tmpFilePath, 'r'),
-                    'ACL' => 'public-read'
-                ]);
-//                unlink($tmpFilePath);
-
-            }catch (S3Exception $e){
-                die("Error uploading file {$e}");
+            $uploadResult = Yii::$app->clientS3->uploadAvatar($fileName, $file->tempName);
+            $publicUrl = Yii::$app->clientS3->getAvatarUrl($fileName);
+            if($user->avatarUrl) {
+                Yii::$app->clientS3->deleteAvatar($fileName);
             }
+            $user->setAttribute('avatarUrl', $publicUrl);
 
-            $publicUrl = $client->getObjectUrl('raccon.wallet',"uploads/{$name}.{$extension}");
-
-            return Json::encode(['url' => $publicUrl]);
-
+            if($user->save()){
+                return Json::encode(['url' => $publicUrl]);
+            }
         }
+
+        if(Yii::$app->request->isPost){
+            if($user->load(Yii::$app->request->post())){
+                $user->save();
+                $this->refresh();
+            };
+        }
+
         return $this->render('settings', [
-            'model' => $model,
+            'user' => $user,
         ]);
     }
 }

@@ -78,6 +78,11 @@
 .settings-wrap .avatar-form{
     width: 100px;
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
 }
 
 .avatar-form .crop-wrap{
@@ -88,15 +93,19 @@
     display: none;
 }
 
+.avatar-form .avatar-controls{
+    padding: 15px;
+}
+
 .avatar-form .preview{
     border-radius: 50%;
     width: 85px;
     height: 85px;
     overflow: hidden;
 }
-.preview span{
+.preview img{
     display: block;
-    width: 100%;
+    width: auto;
     height: 100%;
 }
 

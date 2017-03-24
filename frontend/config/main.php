@@ -27,10 +27,12 @@ return [
         'transactor' => [
             'class' => 'frontend\components\Transactor'
         ],
-        's3' => [
-            'class' => 'frontend\components\S3',
-            'accessKey' => 'AKIAJOZHKEAIFV4XTBJA',
-            'secretKey' => '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'
+        'clientS3' => [
+            'class' => 'frontend\components\ClientS3',
+            'key' => 'AKIAJOZHKEAIFV4XTBJA',
+            'secret' => '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',
+            'region' => 'eu-central-1',
+            'version' => 'latest'
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -49,7 +51,6 @@ return [
 //            'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
-                ['class' => 'yii\rest\UrlRule', 'controller' => 'income'],
             ],
         ],
 

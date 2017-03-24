@@ -8,6 +8,7 @@ use frontend\assets\FAAsset;
 FAAsset::register($this);
 AppAsset::register($this);
 
+$user = $this->params['user'];
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -38,9 +39,9 @@ AppAsset::register($this);
     <aside class="main-sidebar">
         <div class="user-info">
             <div class="avatar-wrap">
-                <img src="/img/user.png" id="avatar" alt="avatar">
+                <img src="<?= $user && $user->avatarUrl ? $user->avatarUrl : '/img/user.png' ?>" id="avatar" alt="avatar">
             </div>
-            <span class="name">User</span>
+            <span class="name"><?= $user ? $user->username : 'Guest'?></span>
         </div>
         <nav class="sidebar-nav">
             <?= SidebarWidget::widget(['items' => [
