@@ -4,6 +4,7 @@ use yii\helpers\Html;
 
 $this->title = 'Wallet analytic';
 
+$this->params['user'] = $user;
 ?>
 <div class="analytic-page">
     <h1><?= Yii::t('app', 'Analytic') ?></h1>

@@ -203,21 +203,33 @@ class User extends ActiveRecord implements IdentityInterface
         $this->password_reset_token = null;
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getIncomes()
     {
         return $this->hasMany(Income::className(), ['userId' => 'id']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getCategories()
     {
         return $this->hasMany(Category::className(), ['userId' => 'id']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getOutcomes()
     {
         return $this->hasMany(Outcome::className(), ['userId' => 'id']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getWallets()
     {
         return $this->hasMany(Wallet::className(), ['userId' => 'id']);

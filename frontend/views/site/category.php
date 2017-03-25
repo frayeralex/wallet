@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use \yii\bootstrap\ActiveForm;
 
-
+$this->params['user'] = $user;
 ?>
 <div class="category-page">
     <h1>

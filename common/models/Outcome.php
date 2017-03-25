@@ -36,6 +36,7 @@ class Outcome extends ActiveRecord
             ['title', 'string', 'min' => 2, 'max' => 50],
             ['value', 'required'],
             ['value', 'double'],
+            [['value', 'title', 'categoryId', 'walletId'], 'safe'],
         ];
     }
     public function beforeSave($insert)

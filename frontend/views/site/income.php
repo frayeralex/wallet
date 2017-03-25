@@ -4,12 +4,14 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 
+
+$this->params['user'] = $user;
 ?>
 <div class="income-page">
     <h1>
         <?=Yii::t('app', 'Incomes') ?>
         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addIncome"><?= Yii::t('app', 'Add +') ?></button>
-    </h1>
+    </h1 >
 
     <?php if(!!count($wallets) && !!count($categories)){ ?>
     <div class="row">

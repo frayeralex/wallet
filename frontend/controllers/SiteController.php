@@ -74,7 +74,9 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        $user = User::findOne(Yii::$app->getUser()->id);
         return $this->render('index', [
+            'user' => $user,
             'currencies' => Wallet::CURRENCIES
         ]);
     }
@@ -90,97 +92,76 @@ class SiteController extends Controller
     public function actionIncome()
     {
         $model = new Income();
-        $limit = ArrayHelper::getValue(Yii::$app->request->get(), 'limit');
-        if(!$limit) $limit = 10;
+        $limit = ArrayHelper::getValue(Yii::$app->request->get(), 'limit', 10);
 
         if(Yii::$app->request->isPost){
-            if ($model->load(Yii::$app->request->post()) && $model->validate()){
-                $income = ArrayHelper::getValue(Yii::$app->request->post(), 'Income');
-                $model->setAttribute('walletId', (integer)ArrayHelper::getValue($income, 'walletId'));
-                $model->setAttribute('categoryId', (integer)ArrayHelper::getValue($income, 'categoryId'));
-
-                Transactor::addIncome($model->walletId, $model->categoryId, $model->value);
-                $model->save();
+            if ($model->load(Yii::$app->request->post())){
+                Transactor::addIncome($model);
                 $this->refresh();
             }
         }
 
-        $user = User::findOne(['user.id' => Yii::$app->user->id]);
-
-
-        $transactions = Income::find()
-            ->where(['userId' => Yii::$app->getUser()->id])
-            ->with(['wallet','category'])
-            ->limit($limit)
-            ->orderBy('createdAt DESC')
-            ->all();
-
-        $categories = Category::find()
+        $user = User::findOne(Yii::$app->getUser()->id);
+        $categories = $user->getCategories()
             ->where([
                 'active' => Category::ACTIVE,
-                'userId' => Yii::$app->getUser()->id,
                 'type' => Category::INCOME_CATEGORY])
             ->orderBy('activity DESC')
             ->asArray()
             ->all();
-
-        $wallets = Wallet::find()
-            ->where([
-                'active' => Wallet::ACTIVE,
-                'userId' => Yii::$app->getUser()->id])
+        $transactions = $user->getIncomes()
+            ->with(['wallet','category'])
+            ->limit($limit)
+            ->orderBy('createdAt DESC')
+            ->all();
+        $wallets = $user->getWallets()
+            ->where(['active' => Wallet::ACTIVE])
             ->asArray()
             ->all();
 
         return $this->render('income', [
-            'transactions' => $transactions,
+            'user' => $user,
             'model' => $model,
+            'transactions' => $transactions,
             'categories' => ArrayHelper::map($categories, 'id', 'name'),
-            'wallets' =>  ArrayHelper::map($wallets, 'id', 'name')
+            'wallets' =>  ArrayHelper::map($wallets, 'id', 'name'),
         ]);
     }
 
     public function actionOutcome()
     {
         $model = new Outcome();
+        $limit = ArrayHelper::getValue(Yii::$app->request->get(), 'limit', 10);
 
         if(Yii::$app->request->isPost){
-            if ($model->load(Yii::$app->request->post()) && $model->validate()){
-                $income = ArrayHelper::getValue(Yii::$app->request->post(), 'Outcome');
-                $model->setAttribute('walletId', (integer)ArrayHelper::getValue($income, 'walletId'));
-                $model->setAttribute('categoryId', (integer)ArrayHelper::getValue($income, 'categoryId'));
-
-                Transactor::addOutcome($model->walletId, $model->categoryId, $model->value);
-                $model->save();
+            if ($model->load(Yii::$app->request->post())){
+                Transactor::addOutcome($model);
                 $this->refresh();
             }
         }
 
-        $transactions = Outcome::find()
-            ->where(['userId' => Yii::$app->getUser()->id])
-            ->with(['wallet','category'])
-            ->limit(10)
-            ->orderBy('createdAt DESC')
-            ->all();
-
-        $categories = Category::find()
+        $user = User::findOne(Yii::$app->getUser()->id);
+        $categories = $user->getCategories()
             ->where([
                 'active' => Category::ACTIVE,
-                'userId' => Yii::$app->getUser()->id,
                 'type' => Category::OUTCOME_CATEGORY])
             ->orderBy('activity DESC')
             ->asArray()
             ->all();
-
-        $wallets = Wallet::find()
-            ->where([
-                'active' => Wallet::ACTIVE,
-                'userId' => Yii::$app->getUser()->id])
+        $transactions = $user->getOutcomes()
+            ->with(['wallet','category'])
+            ->limit($limit)
+            ->orderBy('createdAt DESC')
+            ->all();
+        $wallets = $user->getWallets()
+            ->where(['active' => Wallet::ACTIVE])
             ->asArray()
             ->all();
 
         return $this->render('outcome', [
-            'transactions' => $transactions,
+            'user' => $user,
             'model' => $model,
+            'transactions' => $transactions,
             'categories' => ArrayHelper::map($categories, 'id', 'name'),
             'wallets' =>  ArrayHelper::map($wallets, 'id', 'name')
         ]);
@@ -189,6 +170,7 @@ class SiteController extends Controller
     public function actionCategory()
     {
         $model = new Category();
+        $user = User::findOne(Yii::$app->getUser()->id);
 
         if(Yii::$app->request->isPost){
             if ($model->load(Yii::$app->request->post()) && $model->validate()){
@@ -197,21 +179,18 @@ class SiteController extends Controller
             }
         }
 
-        $outcome = Category::find()
-            ->where([
-                'userId' => Yii::$app->getUser()->id,
-                'active' => Category::ACTIVE,
-                'type' => Category::OUTCOME_CATEGORY ])
+        $income = $user->getCategories()
+            ->where(['active' => Category::ACTIVE, 'type' => Category::INCOME_CATEGORY])
+            ->orderBy('activity DESC')
             ->all();
 
-        $income = Category::find()
-            ->where([
-                'userId' => Yii::$app->getUser()->id,
-                'active' => Category::ACTIVE,
-                'type' => Category::INCOME_CATEGORY ])
+        $outcome = $user->getCategories()
+            ->where(['active' => Category::ACTIVE, 'type' => Category::OUTCOME_CATEGORY])
+            ->orderBy('activity DESC')
             ->all();
 
         return $this->render('category', [
+            'user' => $user,
             'model' => $model,
             'outcome' => $outcome,
             'income' => $income,
@@ -222,6 +201,7 @@ class SiteController extends Controller
     public function actionWallet()
     {
         $model = new Wallet();
+        $user = User::findOne(Yii::$app->getUser()->id);
 
         if(Yii::$app->request->isPost){
             if ($model->load(Yii::$app->request->post()) && $model->validate()){
@@ -230,15 +210,15 @@ class SiteController extends Controller
             }
         }
 
-        $walletList = Wallet::find()
-            ->where([
-                'active' => Wallet::ACTIVE,
-                'userId' => Yii::$app->getUser()->id])
+        $walletList = $user->getWallets()
+            ->where(['active' => Wallet::ACTIVE])
             ->all();
 
+
         return $this->render('wallet', [
-            'walletList' => $walletList,
+            'user' => $user,
             'model' => $model,
+            'walletList' => $walletList,
             'currencies' => Wallet::CURRENCIES
         ]);
     }
@@ -248,7 +228,6 @@ class SiteController extends Controller
         $user = User::findOne(Yii::$app->user->id);
 
         if(Yii::$app->request->isAjax){
-
             $file = UploadedFile::getInstanceByName('file');
 
             $extension = explode('/',$file->type);
@@ -279,4 +258,5 @@ class SiteController extends Controller
             'user' => $user,
         ]);
     }
+
 }
