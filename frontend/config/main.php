@@ -29,8 +29,8 @@ return [
         ],
         'clientS3' => [
             'class' => 'frontend\components\ClientS3',
-            'key' => 'AKIAJOZHKEAIFV4XTBJA',
-            'secret' => '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',
+            'key' => $params['s3']['key'],
+            'secret' => $params['s3']['secret'],
             'region' => 'eu-central-1',
             'version' => 'latest'
         ],

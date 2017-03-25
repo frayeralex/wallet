@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use frontend\components\SidebarWidget;
+use frontend\components\SidebarWidget\SidebarWidget;
 use frontend\assets\AppAsset;
 use frontend\assets\FAAsset;
 
@@ -27,14 +27,6 @@ $user = $this->params['user'];
 <div id="app" class="app">
     <header class="app-header">
         <div class="logo">Wallet</div>
-        <div class="global-search" id="global-search">
-            <div class="input-wrap">
-                <input type="search">
-                <div class="loader"></div>
-            </div>
-            <ul class="search-results" id="search-results">
-            </ul>
-        </div>
     </header>
     <aside class="main-sidebar">
         <div class="user-info">

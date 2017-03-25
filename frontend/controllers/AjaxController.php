@@ -22,13 +22,13 @@ class AjaxController extends Controller
      */
     public function actionUserIncomes ()
     {
-        $incomes = Income::find()
-            ->where(['userId' => Yii::$app->getUser()->id])
-            ->with('category')
-            ->asArray()
-            ->all();
-
         if(Yii::$app->request->isAjax){
+            $incomes = Income::find()
+                ->where(['userId' => Yii::$app->getUser()->id])
+                ->with('category')
+                ->asArray()
+                ->all();
+
             return Json::encode($incomes);
         }
     }
@@ -38,13 +38,13 @@ class AjaxController extends Controller
      */
     public function actionUserOutcomes ()
     {
-        $outcomes = Outcome::find()
-            ->where(['userId' => Yii::$app->getUser()->id])
-            ->with('category')
-            ->asArray()
-            ->all();
-
         if(Yii::$app->request->isAjax){
+            $outcomes = Outcome::find()
+                ->where(['userId' => Yii::$app->getUser()->id])
+                ->with('category')
+                ->asArray()
+                ->all();
+
             return Json::encode($outcomes);
         }
     }

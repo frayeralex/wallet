@@ -27,7 +27,7 @@ $this->params['user'] = $user;
                 </tr>
                 </thead>
                 <tbody>
-                <?php  foreach ($transactions as $item){?>
+                <?php  foreach ($transactions as $item) : ?>
                     <tr class="income-item" data-id="<?= $item->id?>">
                         <td class="title"><?= Html::encode($item->title) ?></td>
                         <td class="category"><?= Html::encode($item->category->name) ?></td>
@@ -35,7 +35,7 @@ $this->params['user'] = $user;
                         <td class="value"><?= Html::encode($item->value) ?> (<?= Html::encode($item->wallet->currency) ?>)</td>
                         <td class="date" data-date="<?=$item->createdAt?>"><?= Yii::$app->formatter->asDate($item->createdAt) ?></td>
                     </tr>
-                <?php } ?>
+                <?php endforeach ?>
                 </tbody>
             </table>
         </div>
@@ -43,37 +43,37 @@ $this->params['user'] = $user;
 
     <!-- Modal -->
     <div class="modal fade" id="addIncome" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title"><?= Yii::t('app', 'Add income') ?></h4>
-                    </div>
-                    <?php $form = ActiveForm::begin(['id' => 'add-income']); ?>
-                    <div class="modal-body">
-                        <?= $form->field($model, 'title') ?>
-
-                        <?= $form->field($model, 'value')->textInput(['type' => 'number', 'step'=> '0.01']) ?>
-
-                        <div class="form-group">
-                            <label><?= Yii::t('app', 'Category') ?></label>
-                            <?= Html::activeDropDownList($model, 'categoryId', $categories, ['class' => 'form-control']) ?>
-                        </div>
-
-                        <div class="form-group">
-                            <label><?= Yii::t('app', 'Wallet') ?></label>
-                            <?= Html::activeDropDownList($model, 'walletId', $wallets, ['class' => 'form-control']) ?>
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-success"><?= Yii::t('app', 'Add') ?></button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal"><?= Yii::t('app', 'Close') ?></button>
-                    </div>
-                    <?php ActiveForm::end(); ?>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><?= Yii::t('app', 'Add income') ?></h4>
                 </div>
+                <?php $form = ActiveForm::begin(['id' => 'add-income']); ?>
+                <div class="modal-body">
+                    <?= $form->field($model, 'title') ?>
+
+                    <?= $form->field($model, 'value')->textInput(['type' => 'number', 'step'=> '0.01']) ?>
+
+                    <div class="form-group">
+                        <label><?= Yii::t('app', 'Category') ?></label>
+                        <?= Html::activeDropDownList($model, 'categoryId', $categories, ['class' => 'form-control']) ?>
+                    </div>
+
+                    <div class="form-group">
+                        <label><?= Yii::t('app', 'Wallet') ?></label>
+                        <?= Html::activeDropDownList($model, 'walletId', $wallets, ['class' => 'form-control']) ?>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success"><?= Yii::t('app', 'Add') ?></button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><?= Yii::t('app', 'Close') ?></button>
+                </div>
+                <?php ActiveForm::end(); ?>
             </div>
         </div>
+    </div>
     <!-- Modal -->
     <div class="modal fade" id="editIncome" role="dialog">
         <div class="modal-dialog">

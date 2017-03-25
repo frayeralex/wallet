@@ -7,6 +7,7 @@ jQuery(function ($) {
     const preview = document.querySelectorAll('.preview');
     const avatarInput = $('#avatarInput');
     const cropArea = $('.crop-wrap');
+    const mainAvatar = document.querySelector('#avatar');
 
     avatarInput.on('change', (event)=>{
         cropArea.fadeIn();
@@ -26,7 +27,6 @@ jQuery(function ($) {
 
     let cropper = new Cropper(image, {
         preview: '.preview',
-        background: false,
         autoCropArea: 0.9,
     });
 
@@ -43,11 +43,11 @@ jQuery(function ($) {
                 contentType: false,
                 success:(res)=>{
                     cropArea.fadeOut();
-                    console.log("success", res)
+                    mainAvatar.src = JSON.parse(res).url;
                 },
                 error: (err)=>{
                     cropArea.fadeOut();
-                    console.log("err", err)
+                    console.log(err)
                 }
             })
         })

@@ -7,6 +7,7 @@ namespace frontend\components;
 use Aws\S3\Exception\S3Exception;
 use Aws\S3\S3Client;
 use yii\base\Component;
+use yii\helpers\ArrayHelper;
 
 
 class ClientS3 extends Component
@@ -37,11 +38,12 @@ class ClientS3 extends Component
     }
 
     /**
-     * @param $fileName
-     * @param $filePath
-     * @return \Aws\Result|null
+     * @param string $fileName
+     * @param string $filePath
+     * @param boolean $returnUrl
+     * @return \Aws\Result|string|false
      */
-    public function uploadAvatar($fileName,$filePath)
+    public function uploadAvatar($fileName,$filePath,$returnUrl = true)
     {
         $result = null;
         try{
@@ -55,7 +57,12 @@ class ClientS3 extends Component
         }catch(S3Exception $e){
             die("Error uploading file {$e}");
         }
-        if($result) return $result;
+
+        if($returnUrl && $result){
+            $result = $result->get('ObjectURL');
+        }
+
+        return $result;
     }
 
     /**
@@ -68,14 +75,17 @@ class ClientS3 extends Component
     }
 
     /**
-     * @param $fileName
+     * @param string $fileUrl
      * @return \Aws\Result
      */
-    public function deleteAvatar($fileName)
+    public function deleteAvatar($fileUrl)
     {
+        $key = explode('/',$fileUrl);
+        $key = strtolower(end($key));
+
         return $this->getClient()->deleteObject([
             'Bucket' => self::BUCKET,
-            'Key' => $fileName
+            'Key' => self::AVATAR_FOLDER.$key
         ]);
     }
 }

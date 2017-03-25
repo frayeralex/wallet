@@ -2,7 +2,9 @@
 namespace frontend\controllers;
 
 
+
 use Yii;
+use frontend\models\ChangePasswordForm;
 use common\models\User;
 use common\models\Category;
 use common\models\Income;
@@ -15,6 +17,8 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\Wallet;
 use yii\web\UploadedFile;
+use yii\web\Response;
+use yii\widgets\ActiveForm;
 
 /**
  * Site controller
@@ -226,6 +230,7 @@ class SiteController extends Controller
     public function actionSettings ()
     {
         $user = User::findOne(Yii::$app->user->id);
+        $changePassword = new ChangePasswordForm();
 
         if(Yii::$app->request->isAjax){
             $file = UploadedFile::getInstanceByName('file');
@@ -235,10 +240,10 @@ class SiteController extends Controller
             $key = md5(uniqid());
             $fileName = "{$key}.{$extension}";
 
-            $uploadResult = Yii::$app->clientS3->uploadAvatar($fileName, $file->tempName);
-            $publicUrl = Yii::$app->clientS3->getAvatarUrl($fileName);
-            if($user->avatarUrl) {
-                Yii::$app->clientS3->deleteAvatar($fileName);
+            $publicUrl = Yii::$app->clientS3->uploadAvatar($fileName, $file->tempName);
+
+            if(!empty($user->avatarUrl)) {
+                Yii::$app->clientS3->deleteAvatar($user->avatarUrl);
             }
             $user->setAttribute('avatarUrl', $publicUrl);
 
@@ -252,10 +257,15 @@ class SiteController extends Controller
                 $user->save();
                 $this->refresh();
             };
+            if($changePassword->load(Yii::$app->request->post()) && $changePassword->validate()){
+                $changePassword->setPassword();
+                $this->refresh();
+            }
         }
 
         return $this->render('settings', [
             'user' => $user,
+            'password' => $changePassword,
         ]);
     }
 

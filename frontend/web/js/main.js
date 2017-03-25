@@ -290,9 +290,7 @@ jQuery(function ($) {
                 });
 
                 const options = {
-                    title: 'Company Performance',
-                    curveType: 'function',
-                    legend: { position: 'bottom' }
+                    legend: { position: 'top' }
                 };
 
                 pendingGoogle(()=>drawLinearChart(rows,options,ratesLinearChart))
@@ -523,7 +521,7 @@ jQuery(function ($) {
 
 
     /*
-    * Header serch
+    * Header search
     * */
 
     const searchComponent = $('#global-search');

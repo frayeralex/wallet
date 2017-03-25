@@ -13,12 +13,6 @@ use yii\bootstrap\ActiveForm;
 
                 <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
 
-                <?= $form->field($model, 'firstName')->textInput() ?>
-
-                <?= $form->field($model, 'lastName')->textInput() ?>
-
-                <?= $form->field($model, 'phone')->input('number') ?>
-
                 <?= $form->field($model, 'email') ?>
 
                 <?= $form->field($model, 'password')->passwordInput() ?>

@@ -64,11 +64,7 @@ $this->params['user'] = $user;
                 <?php $form = ActiveForm::begin(['id' => 'add-category']); ?>
                 <div class="modal-body">
                     <?= $form->field($model, 'name') ?>
-
-                    <div class="form-group">
-                        <label><?= Yii::t('app', 'Category') ?></label>
-                        <?= Html::activeDropDownList($model, 'type', ArrayHelper::index($categories, function($e){return $e;}), ['class' => 'form-control']) ?>
-                    </div>
+                    <?= Html::activeRadioList($model, 'type',ArrayHelper::index($categories, function($e){return $e;})); ?>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success"><?= Yii::t('app', 'Add category') ?></button>
