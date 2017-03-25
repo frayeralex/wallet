@@ -21,7 +21,6 @@ use yii\web\UploadedFile;
  */
 class SiteController extends Controller
 {
-    public $data = "fooo";
     /**
      * @inheritdoc
      */
@@ -105,6 +104,9 @@ class SiteController extends Controller
                 $this->refresh();
             }
         }
+
+        $user = User::findOne(['user.id' => Yii::$app->user->id]);
+
 
         $transactions = Income::find()
             ->where(['userId' => Yii::$app->getUser()->id])

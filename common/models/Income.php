@@ -62,4 +62,9 @@ class Income extends ActiveRecord
     {
         return $this->hasOne(Wallet::className(), ['id' => 'walletId']);
     }
+
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'userId']);
+    }
 }

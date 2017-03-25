@@ -72,4 +72,9 @@ class Wallet extends ActiveRecord
     {
         return $this->hasMany(Outcome::className(), ['walletId' => 'id']);
     }
+
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'userId']);
+    }
 }
