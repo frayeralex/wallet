@@ -5,31 +5,49 @@ namespace frontend\components;
 
 
 use common\models\Category;
+use common\models\Income;
+use common\models\Outcome;
 use common\models\Wallet;
 use yii\base\Component;
 
 class Transactor extends Component
 {
-    static function addIncome($walletId, $categoryId, $value)
+    static function addIncome(Income $model)
     {
-        if(!$walletId || !$categoryId || !$value) return;
-
-        Category::findOne($categoryId)->updateCounters(['activity' => 1]);
-
-        $wallet = Wallet::findOne($walletId);
-        $wallet->value = $wallet->value + $value;
-        $wallet->save();
+        $transaction = Income::getDb()->beginTransaction();
+        try {
+            $model->category->updateCounters(['activity' => 1]);
+            $wallet = $model->wallet;
+            $wallet->value += $model->value;
+            $wallet->save();
+            $model->save();
+            $transaction->commit();
+        } catch(\Exception $e) {
+            $transaction->rollBack();
+            throw $e;
+        } catch(\Throwable $e) {
+            $transaction->rollBack();
+            throw $e;
+        }
     }
 
-    static function addOutcome($walletId, $categoryId, $value)
+    static function addOutcome(Outcome $model)
     {
-        if(!$walletId || !$categoryId || !$value) return;
-
-        Category::findOne($categoryId)->updateCounters(['activity' => 1]);
-
-        $wallet = Wallet::findOne($walletId);
-        $wallet->value = $wallet->value - $value;
-        $wallet->save();
+        $transaction = Outcome::getDb()->beginTransaction();
+        try {
+            $model->category->updateCounters(['activity' => 1]);
+            $wallet = $model->wallet;
+            $wallet->value -= $model->value;
+            $wallet->save();
+            $model->save();
+            $transaction->commit();
+        } catch(\Exception $e) {
+            $transaction->rollBack();
+            throw $e;
+        } catch(\Throwable $e) {
+            $transaction->rollBack();
+            throw $e;
+        }
     }
 
     static function updateOutcome($walletId, $oldValue, $newValue)

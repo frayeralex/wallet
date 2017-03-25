@@ -72,4 +72,9 @@ class Category extends ActiveRecord
     {
         return $this->hasMany(Outcome::className(), ['categoryId' => 'id']);
     }
+
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'userId']);
+    }
 }

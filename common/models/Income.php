@@ -36,6 +36,7 @@ class Income extends ActiveRecord
             ['title', 'string', 'min' => 2, 'max' => 50],
             ['value', 'required'],
             ['value', 'double'],
+            [['value', 'title', 'categoryId', 'walletId'], 'safe'],
         ];
     }
 
@@ -61,5 +62,10 @@ class Income extends ActiveRecord
     public function getWallet()
     {
         return $this->hasOne(Wallet::className(), ['id' => 'walletId']);
+    }
+
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'userId']);
     }
 }

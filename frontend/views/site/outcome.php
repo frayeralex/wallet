@@ -4,6 +4,7 @@ use yii\helpers\Html;;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 
+$this->params['user'] = $user;
 ?>
 <div class="outcome-page">
     <h1>

@@ -27,6 +27,13 @@ return [
         'transactor' => [
             'class' => 'frontend\components\Transactor'
         ],
+        'clientS3' => [
+            'class' => 'frontend\components\ClientS3',
+            'key' => $params['s3']['key'],
+            'secret' => $params['s3']['secret'],
+            'region' => 'eu-central-1',
+            'version' => 'latest'
+        ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
@@ -44,7 +51,6 @@ return [
 //            'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
-                ['class' => 'yii\rest\UrlRule', 'controller' => 'income'],
             ],
         ],
 

@@ -8,6 +8,7 @@ use common\models\Income;
 use common\models\Outcome;
 use common\models\Rate;
 use common\models\Wallet;
+use frontend\components\DeclarationSearcher;
 use frontend\components\Transactor;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
@@ -21,13 +22,13 @@ class AjaxController extends Controller
      */
     public function actionUserIncomes ()
     {
-        $incomes = Income::find()
-            ->where(['userId' => Yii::$app->getUser()->id])
-            ->with('category')
-            ->asArray()
-            ->all();
-
         if(Yii::$app->request->isAjax){
+            $incomes = Income::find()
+                ->where(['userId' => Yii::$app->getUser()->id])
+                ->with('category')
+                ->asArray()
+                ->all();
+
             return Json::encode($incomes);
         }
     }
@@ -37,13 +38,13 @@ class AjaxController extends Controller
      */
     public function actionUserOutcomes ()
     {
-        $outcomes = Outcome::find()
-            ->where(['userId' => Yii::$app->getUser()->id])
-            ->with('category')
-            ->asArray()
-            ->all();
-
         if(Yii::$app->request->isAjax){
+            $outcomes = Outcome::find()
+                ->where(['userId' => Yii::$app->getUser()->id])
+                ->with('category')
+                ->asArray()
+                ->all();
+
             return Json::encode($outcomes);
         }
     }
@@ -188,6 +189,17 @@ class AjaxController extends Controller
                 ->all();
 
             return Json::encode($rates);
+        }
+    }
+
+    public function actionGetDeclarations()
+    {
+        if(Yii::$app->request->isAjax){
+            $text = ArrayHelper::getValue(Yii::$app->request->post(), 'text');
+
+            $result = DeclarationSearcher::findByWords($text);
+
+            return $result ? Json::encode($result) : Json::encode([]);
         }
     }
 

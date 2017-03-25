@@ -4,6 +4,7 @@ use yii\helpers\Html;
 
 $this->title = 'Wallet analytic';
 
+$this->params['user'] = $user;
 ?>
 <div class="analytic-page">
     <h1><?= Yii::t('app', 'Analytic') ?></h1>
@@ -26,12 +27,6 @@ $this->title = 'Wallet analytic';
                 <?= Html::dropDownList('currency', '0', $currencies, ['class' => 'form-control', 'id' => 'currencySelect']) ?>
             </div>
             <div id="lastTransactionsColumnChart" class="chart-wrap">
-                <div class="loader fast light"></div>
-            </div>
-        </section>
-        <section class="flex-item big">
-            <h2><?= Yii::t('app', 'Rates') ?></h2>
-            <div id="ratesLinearChart" class="chart-wrap">
                 <div class="loader fast light"></div>
             </div>
         </section>

@@ -1,12 +1,14 @@
 <?php
 
 use yii\helpers\Html;
-use frontend\components\SidebarWidget;
+use frontend\components\SidebarWidget\SidebarWidget;
 use frontend\assets\AppAsset;
 use frontend\assets\FAAsset;
 
 FAAsset::register($this);
 AppAsset::register($this);
+
+$user = $this->params['user'];
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -29,9 +31,9 @@ AppAsset::register($this);
     <aside class="main-sidebar">
         <div class="user-info">
             <div class="avatar-wrap">
-                <img src="/img/user.png" alt="">
+                <img src="<?= $user && $user->avatarUrl ? $user->avatarUrl : '/img/user.png' ?>" id="avatar" alt="avatar">
             </div>
-            <span class="name">Admin Admin</span>
+            <span class="name"><?= $user ? $user->username : 'Guest'?></span>
         </div>
         <nav class="sidebar-nav">
             <?= SidebarWidget::widget(['items' => [
