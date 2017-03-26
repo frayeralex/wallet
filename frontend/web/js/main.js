@@ -313,11 +313,8 @@ jQuery(function ($) {
 
     function logoutAction(){
         $.ajax({
-            url: '/authorisation/logout',
-            type: 'POST',
-            success: ()=>{
-                console.log("good")
-            }
+            url: '/auth/logout',
+            type: 'POST'
         })
     }
 
