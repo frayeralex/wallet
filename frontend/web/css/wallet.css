@@ -121,3 +121,12 @@
     width: 100%;
     height: auto;
 }
+
+/*
+* Pagination
+*/
+
+.pagination-wrap{
+    display: flex;
+    justify-content: center;
+}

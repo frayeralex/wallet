@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-use yii\helpers\Url;
+use yii\widgets\LinkPager;
 
 
 $this->params['user'] = $user;
@@ -40,6 +40,10 @@ $this->params['user'] = $user;
             </table>
         </div>
     </div>
+
+    <nav class="pagination-wrap">
+        <?= LinkPager::widget(['pagination' => $pagination])?>
+    </nav>
 
     <!-- Modal -->
     <div class="modal fade" id="addIncome" role="dialog">
@@ -111,14 +115,14 @@ $this->params['user'] = $user;
     <?php } if(!count($wallets)) { ?>
     <div class="alert alert-warning" role="alert">
         <?= Yii::t('app', 'Firstly you must add wallet')?>
-        <a href="<?= Url::toRoute(["/site/wallet"])?>">
+        <a href="<?= Yii::$app->urlManager->createUrl(["site/wallet"])?>">
             <?= Yii::t('app', 'Please, go to wallet page')?>
         </a>
     </div>
     <?php } if (!count($categories)) {?>
     <div class="alert alert-warning" role="alert">
         <?= Yii::t('app', 'Firstly you must add income category')?>
-        <a href="<?= Url::toRoute(["/site/category"])?>">
+        <a href="<?= Yii::$app->urlManager->createUrl(["site/category"])?>">
             <?= Yii::t('app', 'Please, go to category page')?>
         </a>
     </div>
