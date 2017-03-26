@@ -55,7 +55,7 @@ class SiteController extends Controller
     public function beforeAction($event)
     {
         if(Yii::$app->user->isGuest || $event->id === 'error'){
-            return $this->redirect(['/authorisation']);
+            return $this->redirect(['/auth']);
         }
         return parent::beforeAction($event);
     }
@@ -90,7 +90,7 @@ class SiteController extends Controller
     public function actionLogout()
     {
         Yii::$app->user->logout();
-        return $this->redirect(['/authorisation']);
+        return $this->redirect(['/auth']);
     }
 
 
