@@ -130,3 +130,58 @@
     display: flex;
     justify-content: center;
 }
+
+/*
+* Rate widget
+*/
+.rate-widget-block{
+    padding: 0 15px;
+}
+.rate-widget{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #fff;
+    width: 75px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.rate-widget > span{
+    display: block;
+}
+
+.rate-widget *:nth-child(1){
+    width: 50%;
+    text-align: left;
+}
+.rate-widget *:nth-child(2){
+    width: 50%;
+    text-align: right;
+}
+.rate-widget *:nth-child(3){
+    width: 100%;;
+}
+.rate-widget .grow-up{
+    color: green;
+}
+.rate-widget .grow-up:before{
+    content: '\f062';
+    font-family: "FontAwesome";
+}
+
+.rate-widget .equal{
+    color: yellow;
+}
+
+.rate-widget .equal:before{
+    content: '\f068';
+    font-family: "FontAwesome";
+}
+
+.rate-widget .grow-down{
+    color: red;
+}
+.rate-widget .grow-down:after{
+    content: '\f063';
+    font-family: "FontAwesome";
+}

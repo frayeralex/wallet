@@ -1,7 +1,7 @@
 <?php
 
 
-namespace frontend\components\SidebarWidget;
+namespace frontend\widgets;
 
 use Yii;
 use yii\base\Widget;
