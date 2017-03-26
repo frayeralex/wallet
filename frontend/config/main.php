@@ -34,6 +34,16 @@ return [
             'region' => 'eu-central-1',
             'version' => 'latest'
         ],
+        'authClientCollection' => [
+            'class' => 'yii\authclient\Collection',
+            'clients' => [
+                'google' => [
+                    'class' => 'yii\authclient\clients\Google',
+                    'clientId' => $params['google']['id'],
+                    'clientSecret' => $params['google']['secret'],
+                ],
+            ],
+        ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [

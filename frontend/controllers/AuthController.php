@@ -11,10 +11,26 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use yii\web\BadRequestHttpException;
 use yii\base\InvalidParamException;
+use frontend\components\AuthHandler;
 
-class AuthorisationController extends Controller
+class AuthController extends Controller
 {
-    public $layout = 'authorisation';
+    public $layout = 'auth';
+
+    public function actions()
+    {
+        return [
+            'auth' => [
+                'class' => 'yii\authclient\AuthAction',
+                'successCallback' => [$this, 'onAuthSuccess'],
+            ],
+        ];
+    }
+
+    public function onAuthSuccess($client)
+    {
+        (new AuthHandler($client))->handle();
+    }
 
     public function beforeAction($event)
     {

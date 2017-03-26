@@ -21,12 +21,20 @@ use yii\bootstrap\ActiveForm;
                 <button type="submit" class="btn btn-success">
                     <?= Yii::t('app', 'Submit') ?>
                 </button>
-                <a href="<?= Yii::$app->urlManager->createUrl(['authorisation/index'])?>" class="btn btn-primary">
+                <a href="<?= Yii::$app->urlManager->createUrl(['auth/index'])?>" class="btn btn-primary">
                     <?= Yii::t('app', 'Login') ?>
                 </a>
             </div>
 
             <?php ActiveForm::end(); ?>
+
+            <div class="socials-auth">
+                <p><?= Yii::t('app', 'or') ?></p>
+                <?= yii\authclient\widgets\AuthChoice::widget([
+                    'baseAuthUrl' => ['auth/auth'],
+                    'popupMode' => true,
+                ]) ?>
+            </div>
         </div>
     </div>
 </div>
