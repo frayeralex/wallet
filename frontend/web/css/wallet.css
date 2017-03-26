@@ -185,3 +185,21 @@
     content: '\f063';
     font-family: "FontAwesome";
 }
+
+/*
+* Socials auth
+*/
+.socials-auth {
+    margin-top: 10px;
+    padding-top: 20px;
+    text-align: center;
+}
+.socials-auth .auth-clients{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+.auth-clients > li{
+    margin: 0 5px;
+}
