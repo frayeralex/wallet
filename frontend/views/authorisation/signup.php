@@ -1,6 +1,5 @@
 <?php
 
-use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
 
 ?>
@@ -22,7 +21,7 @@ use yii\bootstrap\ActiveForm;
                 <button type="submit" class="btn btn-success">
                     <?= Yii::t('app', 'Submit') ?>
                 </button>
-                <a href="<?= Url::to(['authorisation/index'])?>" class="btn btn-primary">
+                <a href="<?= Yii::$app->urlManager->createUrl(['authorisation/index'])?>" class="btn btn-primary">
                     <?= Yii::t('app', 'Login') ?>
                 </a>
             </div>

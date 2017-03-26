@@ -1,14 +1,18 @@
 <?php
 
 use yii\helpers\Html;
-use frontend\components\SidebarWidget\SidebarWidget;
+use frontend\widgets\SidebarWidget;
+use frontend\widgets\CurrencyRateWidget;
 use frontend\assets\AppAsset;
 use frontend\assets\FAAsset;
+use common\models\Wallet;
 
 FAAsset::register($this);
 AppAsset::register($this);
 
 $user = $this->params['user'];
+$avatarUrl = $user && $user->avatarUrl ? $user->avatarUrl : '/img/user.png';
+$userName = $user ? $user->username : Yii::t('app', 'Guest');
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -26,14 +30,22 @@ $user = $this->params['user'];
 
 <div id="app" class="app">
     <header class="app-header">
-        <div class="logo">Wallet</div>
+        <div class="rate-widget-block">
+            <?= CurrencyRateWidget::widget() ?>
+        </div>
+        <div class="rate-widget-block">
+            <?= CurrencyRateWidget::widget(['currency' => Wallet::CURRENCIES[2]]) ?>
+        </div>
+        <div class="rate-widget-block">
+            <?= CurrencyRateWidget::widget(['currency' => Wallet::CURRENCIES[3]]) ?>
+        </div>
     </header>
     <aside class="main-sidebar">
         <div class="user-info">
             <div class="avatar-wrap">
-                <img src="<?= $user && $user->avatarUrl ? $user->avatarUrl : '/img/user.png' ?>" id="avatar" alt="avatar">
+                <img src="<?= $avatarUrl ?>" id="avatar" alt="avatar">
             </div>
-            <span class="name"><?= $user ? $user->username : 'Guest'?></span>
+            <span class="name"><?= $userName ?></span>
         </div>
         <nav class="sidebar-nav">
             <?= SidebarWidget::widget(['items' => [

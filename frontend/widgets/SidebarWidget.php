@@ -1,7 +1,7 @@
 <?php
 
 
-namespace frontend\components\SidebarWidget;
+namespace frontend\widgets;
 
 use Yii;
 use yii\base\Widget;
@@ -29,7 +29,8 @@ class SidebarWidget extends Widget
             $activeClass = ArrayHelper::getValue($item, 'url') === Url::current() ? ' active' : '';
 
             $html .= Html::beginTag('li', ['class' => ArrayHelper::getValue($item, 'class') . $activeClass]);
-            $html .= Html::beginTag('a', ['href' => ArrayHelper::getValue($item, 'url')]);
+            $html .= Html::beginTag('a',
+                ['href' => Yii::$app->urlManager->createUrl(ArrayHelper::getValue($item, 'url'))]);
             $html .= ArrayHelper::getValue($item, 'label');
             $html .= Html::endTag('a');
             $html .= Html::endTag('li');

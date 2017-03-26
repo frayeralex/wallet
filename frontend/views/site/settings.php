@@ -5,7 +5,6 @@ use yii\helpers\Html;
 use frontend\assets\CropperAsset;
 use frontend\assets\SiteSettingsAsset;
 use yii\widgets\ActiveForm;
-use yii\helpers\ArrayHelper;
 
 
 CropperAsset::register($this);

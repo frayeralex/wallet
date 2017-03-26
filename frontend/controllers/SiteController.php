@@ -10,6 +10,7 @@ use common\models\Category;
 use common\models\Income;
 use common\models\Outcome;
 use frontend\components\Transactor;
+use yii\data\Pagination;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\web\Controller;
@@ -96,7 +97,6 @@ class SiteController extends Controller
     public function actionIncome()
     {
         $model = new Income();
-        $limit = ArrayHelper::getValue(Yii::$app->request->get(), 'limit', 10);
 
         if(Yii::$app->request->isPost){
             if ($model->load(Yii::$app->request->post())){
@@ -113,15 +113,26 @@ class SiteController extends Controller
             ->orderBy('activity DESC')
             ->asArray()
             ->all();
+
         $transactions = $user->getIncomes()
             ->with(['wallet','category'])
-            ->limit($limit)
-            ->orderBy('createdAt DESC')
-            ->all();
+            ->orderBy('createdAt DESC');
+
         $wallets = $user->getWallets()
             ->where(['active' => Wallet::ACTIVE])
             ->asArray()
             ->all();
+
+        $pagination = new Pagination([
+            'defaultPageSize' => 5,
+            'totalCount' => $transactions->count()
+        ]);
+
+        $transactions = $transactions
+            ->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
+
 
         return $this->render('income', [
             'user' => $user,
@@ -129,6 +140,7 @@ class SiteController extends Controller
             'transactions' => $transactions,
             'categories' => ArrayHelper::map($categories, 'id', 'name'),
             'wallets' =>  ArrayHelper::map($wallets, 'id', 'name'),
+            'pagination' => $pagination
         ]);
     }
 
@@ -154,12 +166,21 @@ class SiteController extends Controller
             ->all();
         $transactions = $user->getOutcomes()
             ->with(['wallet','category'])
-            ->limit($limit)
-            ->orderBy('createdAt DESC')
-            ->all();
+            ->orderBy('createdAt DESC');
+
         $wallets = $user->getWallets()
             ->where(['active' => Wallet::ACTIVE])
             ->asArray()
+            ->all();
+
+        $pagination = new Pagination([
+            'defaultPageSize' => 5,
+            'totalCount' => $transactions->count()
+        ]);
+
+        $transactions = $transactions
+            ->offset($pagination->offset)
+            ->limit($pagination->limit)
             ->all();
 
         return $this->render('outcome', [
@@ -167,7 +188,8 @@ class SiteController extends Controller
             'model' => $model,
             'transactions' => $transactions,
             'categories' => ArrayHelper::map($categories, 'id', 'name'),
-            'wallets' =>  ArrayHelper::map($wallets, 'id', 'name')
+            'wallets' =>  ArrayHelper::map($wallets, 'id', 'name'),
+            'pagination' => $pagination
         ]);
     }
 

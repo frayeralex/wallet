@@ -48,9 +48,14 @@ return [
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
-//            'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
+                '' => 'site/index',
+                'wallets' => 'site/wallet',
+                'categories' => 'site/category',
+                'outcomes' => 'site/outcome',
+                'incomes' => 'site/income',
+                'account' => 'site/settings',
             ],
         ],
 

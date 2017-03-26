@@ -10,7 +10,7 @@ use yii\helpers\ArrayHelper;
 
 class DeclarationSearcher extends Component
 {
-    const NAZK_RUL = 'https://public-api.nazk.gov.ua/v1/declaration/?q=';
+    const NAZK_URL = 'https://public-api.nazk.gov.ua/v1/declaration/?q=';
     const OPTIONS = [
         'requestConfig' => [
             'format' => Client::FORMAT_JSON
@@ -28,7 +28,7 @@ class DeclarationSearcher extends Component
         foreach ($words as $word){
             $query .= $word . '+';
         }
-        $url = self::NAZK_RUL.$query;
+        $url = self::NAZK_URL.$query;
 
         $client = new Client(self::OPTIONS);
         $response = $client->createRequest()
@@ -37,7 +37,7 @@ class DeclarationSearcher extends Component
             ->send();
         if ($response->isOk){
             $items = ArrayHelper::getValue($response->getData(), 'items');
-            if(!count($items)) return;
+            if(!count($items)) return [];
 
             return $items;
         }
