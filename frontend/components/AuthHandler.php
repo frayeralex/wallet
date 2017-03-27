@@ -23,14 +23,42 @@ class AuthHandler
 
     public function handle()
     {
+        $source = $this->client->getId();
+        $email = null;
+        $id = null;
+        $avatarUrl = null;
+
         $attributes = $this->client->getUserAttributes();
-        $email = ArrayHelper::getValue($attributes, 'emails.0.value');
-        $id = ArrayHelper::getValue($attributes, 'id');
-        $avatarUrl = ArrayHelper::getValue($attributes, 'image.url');
-        $nickname = ArrayHelper::getValue($attributes, 'displayName');
+        switch ($source){
+            case "facebook":
+            {
+                $email = ArrayHelper::getValue($attributes, 'email');
+                $id = ArrayHelper::getValue($attributes, 'id');
+                $nickname = ArrayHelper::getValue($attributes, 'name');
+            };
+            break;
+            case "google":
+            {
+                $email = ArrayHelper::getValue($attributes, 'emails.0.value');
+                $id = ArrayHelper::getValue($attributes, 'id');
+                $avatarUrl = ArrayHelper::getValue($attributes, 'image.url');
+                $nickname = ArrayHelper::getValue($attributes, 'displayName');
+            };break;
+            case "vk":
+            {
+                $email = ArrayHelper::getValue($attributes, 'uid')."@vk.com";
+                $id = ArrayHelper::getValue($attributes, 'id');
+                $nickname = ArrayHelper::getValue($attributes, 'id');
+                $avatarUrl = ArrayHelper::getValue($attributes, 'photo');
+            };break;
+            default:
+                die("This social auth don`t maintain");
+        }
+
+
 
         $auth = Auth::find()->where([
-            'source' => $this->client->getId(),
+            'source' => $source,
             'source_id' => $id,
         ])->one();
 

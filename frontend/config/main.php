@@ -42,6 +42,16 @@ return [
                     'clientId' => $params['google']['id'],
                     'clientSecret' => $params['google']['secret'],
                 ],
+                'facebook' => [
+                    'class' => 'yii\authclient\clients\Facebook',
+                    'clientId' => $params['facebook']['id'],
+                    'clientSecret' => $params['facebook']['secret'],
+                ],
+                'vk' => [
+                    'class' => 'yii\authclient\clients\VKontakte',
+                    'clientId' => $params['vk']['id'],
+                    'clientSecret' => $params['vk']['secret'],
+                ]
             ],
         ],
         'log' => [
