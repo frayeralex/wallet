@@ -37,7 +37,7 @@ class DeclarationSearcher extends Component
             ->send();
         if ($response->isOk){
             $items = ArrayHelper::getValue($response->getData(), 'items');
-            if(!count($items)) return [];
+            if(!count($items)) return;
 
             return $items;
         }

@@ -51,6 +51,20 @@ class AuthHandler
                 $nickname = ArrayHelper::getValue($attributes, 'id');
                 $avatarUrl = ArrayHelper::getValue($attributes, 'photo');
             };break;
+            case 'github':
+            {
+                $email = ArrayHelper::getValue($attributes, 'email');
+                $id = ArrayHelper::getValue($attributes, 'id');
+                $nickname = ArrayHelper::getValue($attributes, 'login');
+                $avatarUrl = ArrayHelper::getValue($attributes, 'avatar_url');
+            };break;
+            case 'twitter':
+            {
+                $nickname = ArrayHelper::getValue($attributes, 'name');
+                $id = ArrayHelper::getValue($attributes, 'id');
+                $email = ArrayHelper::getValue($attributes, 'screen_name')."@twitter.com";
+                $avatarUrl = ArrayHelper::getValue($attributes, 'profile_background_image_url');
+            };break;
             default:
                 die("This social auth don`t maintain");
         }
@@ -73,6 +87,10 @@ class AuthHandler
 
                 } else {
                     $password = Yii::$app->security->generateRandomString(6);
+                    $isUsernameExist = User::findByUsername($nickname);
+                    if($isUsernameExist){
+                        $nickname .= " ({$source})";
+                    }
                     $user = new User([
                         'username' => $nickname,
                         'email' => $email,

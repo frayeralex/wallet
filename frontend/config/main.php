@@ -51,6 +51,19 @@ return [
                     'class' => 'yii\authclient\clients\VKontakte',
                     'clientId' => $params['vk']['id'],
                     'clientSecret' => $params['vk']['secret'],
+                ],
+                'github' => [
+                    'class' => 'yii\authclient\clients\GitHub',
+                    'clientId' => $params['github']['id'],
+                    'clientSecret' => $params['github']['secret'],
+                ],
+                'twitter' => [
+                    'class' => 'yii\authclient\clients\Twitter',
+                    'attributeParams' => [
+                         'include_email' => 'true'
+                     ],
+                    'consumerKey' => $params['twitter']['id'],
+                    'consumerSecret' => $params['twitter']['secret'],
                 ]
             ],
         ],
