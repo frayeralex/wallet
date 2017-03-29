@@ -49,6 +49,10 @@ class Wallet extends ActiveRecord
         ];
     }
 
+    public function getLabel(){
+        return "{$this->name} ({$this->currency})";
+    }
+
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)){

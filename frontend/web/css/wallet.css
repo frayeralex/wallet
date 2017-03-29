@@ -1,3 +1,7 @@
+/*
+* Wallet page
+*/
+
 .wallet-item button{
     opacity: 0;
     transition: .5s;
@@ -7,6 +11,49 @@
 .wallet-item:hover button{
     opacity: 1;
     right: 0;
+}
+
+.controls-panel{
+    margin: 10px 0;
+    padding: 0 15px;
+}
+.controls-panel{
+    display: flex;
+    border: 1px solid #353058;
+    border-radius: 5px;
+}
+.controls-panel > div{
+    margin: 10px;
+    position: relative;
+    opacity: .7;
+    transition: .3s;
+    transform: scale(.8);
+}
+.controls-panel > div:first-of-type{
+    margin-left: 0;
+}
+.controls-panel > div:last-of-type{
+    margin-right: 0;
+}
+.controls-panel > div:hover{
+    cursor: pointer;
+    opacity: 1;
+    transform: scale(1);
+}
+.add-wallet-btn{
+    background: url("../img/add-wallet.png")no-repeat;
+    width: 64px;
+    height: 64px;
+}
+.wallet-transaction{
+    background: url("../img/transaction.png")no-repeat;
+    width: 64px;
+    height: 64px;
+}
+.wallet-report-pdf{
+    background: url("../img/pdf.png")no-repeat;
+    width: 64px;
+    height: 64px
 }
 
 /**
