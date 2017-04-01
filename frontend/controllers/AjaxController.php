@@ -17,44 +17,6 @@ use yii\web\Controller;
 
 class AjaxController extends Controller
 {
-    /**
-     * Return array of user Outcomes
-     */
-    public function actionUserLastTransactions ()
-    {
-        if(Yii::$app->request->isAjax){
-            $start = ArrayHelper::getValue(Yii::$app->request->post(), 'dateStart');
-            $end = ArrayHelper::getValue(Yii::$app->request->post(), 'dateEnd');
-            $currency = (int)ArrayHelper::getValue(Yii::$app->request->post(), 'currency');
-            if(!$start || !$end) return Json::encode(['err' => 'no data']);
-
-            $incomes = Income::find()
-                ->where(['between', 'income.createdAt', $start, $end])
-                ->joinWith('wallet')
-                ->andWhere([
-                    'income.userId' => Yii::$app->getUser()->id,
-                    'wallet.currency' => Wallet::CURRENCIES[$currency]])
-                ->asArray()
-                ->all();
-
-            $outcomes = Outcome::find()
-                ->where(['between', 'outcome.createdAt', $start, $end])
-                ->joinWith('wallet')
-                ->andWhere([
-                    'outcome.userId' => Yii::$app->getUser()->id,
-                    'wallet.currency' => Wallet::CURRENCIES[$currency]])
-                ->asArray()
-                ->all();
-
-            return Json::encode([
-                'incomes' => $incomes,
-                'outcomes' => $outcomes,
-            ]);
-        }
-    }
-
-
-
     public function actionUpdateCategoryName()
     {
         if(Yii::$app->request->isAjax){
@@ -78,17 +40,6 @@ class AjaxController extends Controller
             $category->save();
 
             return Json::encode(['result' => 'ok']);
-        }
-    }
-
-    public function actionGetRates()
-    {
-        if(Yii::$app->request->isAjax){
-            $rates = Rate::find()
-                ->asArray()
-                ->all();
-
-            return Json::encode($rates);
         }
     }
 

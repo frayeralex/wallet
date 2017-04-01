@@ -1,7 +1,11 @@
 'use strict';
 
 jQuery(function ($) {
-    //crop preview
+    console.log("settings page")
+
+    /*
+     * Crop avatar
+     */
 
     const image = document.getElementById('crop');
     const preview = document.querySelectorAll('.preview');
@@ -53,5 +57,56 @@ jQuery(function ($) {
         })
     });
 
-    console.log("settings page")
+
+    /*
+     * Declaration search input
+     */
+
+    const searchComponent = $('#global-search');
+    const searchInput = $('#global-search [type="search"]');
+    const searchResult = $('#search-results');
+
+    let searchTimeout;
+    searchInput.on('input', (event)=>{
+        searchResult.html('');
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(()=>{
+            if(event.target.value) {
+                getDeclarationList(event.target.value)
+            }
+        },1000)
+    });
+
+    function getDeclarationList(text) {
+        searchComponent.addClass('loading');
+        $.ajax({
+            url: '/ajax/get-declarations',
+            type: 'POST',
+            data: {text},
+            success: (response)=>{
+                const result = JSON.parse(response);
+                renderResultList(result, searchResult);
+                searchComponent.removeClass('loading');
+            },
+            error: (err)=>{
+                searchComponent.removeClass('loading');
+            }
+        })
+    }
+
+    function renderResultList(data, container) {
+        if(!data.length) return container.html(`<li>No results</li>`)
+        let html = data.map(item=>{
+            if(!item.linkPDF) return '';
+            return (
+                `<li>
+                    <p>${item.lastname} ${item.firstname}</p>
+                    <p>${item.placeOfWork}</p>
+                    <a href="${item.linkPDF}" download="declaration.pdf">Download Pdf</a>
+                 </li>`
+            )
+        });
+
+        container.html(html);
+    }
 });

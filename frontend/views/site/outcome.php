@@ -3,6 +3,9 @@
 use yii\helpers\Html;;
 use yii\bootstrap\ActiveForm;
 use yii\widgets\LinkPager;
+use frontend\assets\SiteOutcomeAsset;
+
+SiteOutcomeAsset::register($this);
 
 $this->params['user'] = $user;
 ?>

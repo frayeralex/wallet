@@ -16,9 +16,7 @@ class IncomeController extends AbstractAjaxController
      */
     public function actionIndex ()
     {
-        Yii::$app->response->format = Response::FORMAT_JSON;
         $incomes = [];
-
         if(Yii::$app->request->isAjax && !Yii::$app->user->isGuest){
             $incomes = Income::find()
                 ->where(['userId' => Yii::$app->getUser()->id])
@@ -26,7 +24,7 @@ class IncomeController extends AbstractAjaxController
                 ->asArray()
                 ->all();
         }
-        return $incomes;
+        return $this->toJson($incomes);
     }
 
     /**

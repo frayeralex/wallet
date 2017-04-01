@@ -3,10 +3,11 @@
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use \yii\bootstrap\ActiveForm;
+use frontend\assets\SiteWalletAsset;
 
+SiteWalletAsset::register($this);
 $this->params['user'] = $user;
 $wallets = ArrayHelper::map(ArrayHelper::toArray($walletList), 'id', 'name');
-var_dump($walletList[0]->getLabel());
 ?>
 <div class="site-wallet">
     <h1><?= Yii::t('app', 'Wallet page') ?></h1>

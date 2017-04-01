@@ -17,8 +17,7 @@ class OutcomeController extends AbstractAjaxController
      */
     public function actionIndex ()
     {
-        Yii::$app->response->format = Response::FORMAT_JSON;
-        if(Yii::$app->user->isGuest) return [];
+        $outcomes = [];
 
         if(Yii::$app->request->isAjax){
             $outcomes = Outcome::find()
@@ -26,9 +25,8 @@ class OutcomeController extends AbstractAjaxController
                 ->with('category')
                 ->asArray()
                 ->all();
-
-            return $outcomes;
         }
+        return $this->toJson($outcomes);
     }
 
     /**

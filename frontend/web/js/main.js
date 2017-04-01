@@ -29,28 +29,6 @@ jQuery(function ($) {
     const app = new App('#app');
 
     /**
-     * site-wallet page
-     */
-    const walletPage = $('.site-wallet');
-
-    walletPage.on('click', '[data-wallet-id]', function (event) {
-        app.showLoader();
-        const id = event.currentTarget.getAttribute('data-wallet-id');
-        $.ajax({
-            url: '/site/delete-wallet',
-            type: 'POST',
-            data: {id: id },
-            success: ()=> {
-                $(event.currentTarget).parents('tr').remove();
-                app.hideLoader();
-            },
-            error: ()=> {
-                app.hideLoader();
-            }
-        })
-    });
-
-    /**
      * Analytic page
      */
 
@@ -100,7 +78,7 @@ jQuery(function ($) {
     if(incomePieChart){
         $.ajax({
             url: '/ajax/income',
-            type: 'POST',
+            type: 'GET',
             success: (response)=> {
                 const incomes = JSON.parse(response);
                 const rows = [['Category', 'Value']];
@@ -141,7 +119,7 @@ jQuery(function ($) {
     if(outcomePieChart){
         $.ajax({
             url: '/ajax/outcome',
-            type: 'POST',
+            type: 'GET',
             success: (response)=> {
                 const outcomes = JSON.parse(response);
                 const rows = [['Category', 'Value']];
@@ -188,8 +166,8 @@ jQuery(function ($) {
 
     function renderTransactionsChart(dateStart, dateEnd, currency) {
         $.ajax({
-            url: '/ajax/user-last-transactions',
-            type: 'POST',
+            url: '/ajax/analytic/index',
+            type: 'GET',
             data: {
                 dateStart,
                 dateEnd,
@@ -257,8 +235,8 @@ jQuery(function ($) {
 
     if(ratesLinearChart){
         $.ajax({
-            url: '/ajax/get-rates',
-            type: 'POST',
+            url: '/ajax/rate/index',
+            type: 'GET',
             success: (response)=>{
                 const rates = JSON.parse(response)
                     .map(rate=>{
@@ -274,7 +252,6 @@ jQuery(function ($) {
                 },[])
                     .sort();
                 const currencies = ['USD', 'EUR'];
-                // const currencies = ['USD', 'RUB', 'EUR'];
                 const rows = [['Date', ...currencies]];
 
                 dates.forEach(date=>{
@@ -283,7 +260,6 @@ jQuery(function ($) {
                         if(rate.exchangedate === date){
                             if(rate.cc === currencies[0]) row[1] = rate.value;
                             if(rate.cc === currencies[1]) row[2] = rate.value;
-                            // if(rate.cc === currencies[2]) row[3] = rate.value;
                         }
                     });
                     rows.push(row);
@@ -373,200 +349,4 @@ jQuery(function ($) {
             }
         })
     });
-
-    /**
-     * Outcome page
-     */
-
-    const outcomeItems = $('.outcome-item');
-    const editOutcomeModal = $('#editOutcome');
-    const updateOutcomeBtn = $('#updateOutcome');
-    const removeOutcomeBtn = $('#removeOutcome');
-
-    outcomeItems.on('click', (event)=>{
-        const item = $(event.currentTarget);
-        const id = item.attr('data-id');
-        const title = item.find('.title').text();
-        const value = item.find('.value').text();
-        const date = item.find('.date').attr('data-date');
-
-        editOutcomeModal.attr('data-outcome-id', id);
-        editOutcomeModal.find('input.title').val(title);
-        editOutcomeModal.find('input.value').val(parseFloat(value));
-        editOutcomeModal.find('input.date').val(date.slice(0,10));
-        editOutcomeModal.modal('show');
-    });
-
-    updateOutcomeBtn.on('click', ()=>{
-        const id = +editOutcomeModal.attr('data-outcome-id');
-        const title = editOutcomeModal.find('input.title').val();
-        const value = parseFloat(editOutcomeModal.find('input.value').val());
-        const createdAt = new Date(editOutcomeModal.find('input.date').val()).toISOString();
-        const data = {
-            id,
-            title,
-            value,
-            createdAt
-        };
-
-        $.ajax({
-            url: '/ajax/outcome/update',
-            type: 'POST',
-            data,
-            success: ()=>{
-                const item = $(`[data-id="${data.id}"]`);
-                item.find('.title').text(data.title);
-                item.find('.value').text(data.value);
-                item.find('.date').text(moment(data.createdAt).format('MMM D, YYYY'))
-                item.find('.date').attr('data-date', data.createdAt);
-                editOutcomeModal.modal('hide');
-            },
-            error: ()=>{
-                editOutcomeModal.modal('hide');
-            }
-        })
-    });
-
-    removeOutcomeBtn.on('click',()=>{
-        const id = +editOutcomeModal.attr('data-outcome-id');
-        $.ajax({
-            url: '/ajax/outcome/remove',
-            type: 'POST',
-            data: {id},
-            success: ()=>{
-                const item = $(`[data-id="${id}"]`);
-                item.remove();
-
-                editOutcomeModal.modal('hide');
-            },
-            error: ()=>{
-                editOutcomeModal.modal('hide');
-            }
-        })
-    });
-
-    /**
-     * Income page
-     */
-
-    const incomeItems = $('.income-item');
-    const editIncomeModal = $('#editIncome');
-    const updateIncomeBtn = $('#updateIncome');
-    const removeIncomeBtn = $('#removeIncome');
-
-    incomeItems.on('click', (event)=>{
-        const item = $(event.currentTarget);
-        const id = item.attr('data-id');
-        const title = item.find('.title').text();
-        const value = item.find('.value').text();
-        const date = item.find('.date').attr('data-date');
-
-        editIncomeModal.attr('data-outcome-id', id);
-        editIncomeModal.find('input.title').val(title);
-        editIncomeModal.find('input.value').val(parseFloat(value));
-        editIncomeModal.find('input.date').val(date.slice(0,10));
-        editIncomeModal.modal('show');
-    });
-
-    updateIncomeBtn.on('click', ()=>{
-        const id = +editIncomeModal.attr('data-outcome-id');
-        const title = editIncomeModal.find('input.title').val();
-        const value = parseFloat(editIncomeModal.find('input.value').val());
-        const date = new Date(editIncomeModal.find('input.date').val()).toISOString();
-        const data = {
-            id,
-            title,
-            value,
-            date
-        };
-
-        $.ajax({
-            url: '/ajax/income/update',
-            type: 'POST',
-            data,
-            success: ()=>{
-                const item = $(`[data-id="${data.id}"]`);
-                item.find('.title').text(data.title);
-                item.find('.value').text(data.value);
-                item.find('.date').text(moment(data.date).format('MMM D, YYYY'))
-                item.find('.date').attr('data-date', data.date);
-                editIncomeModal.modal('hide');
-            },
-            error: ()=>{
-                editIncomeModal.modal('hide');
-            }
-        })
-    });
-
-    removeIncomeBtn.on('click',()=>{
-        const id = +editIncomeModal.attr('data-outcome-id');
-        $.ajax({
-            url: '/ajax/income/remove',
-            type: 'POST',
-            data: {id},
-            success: ()=>{
-                const item = $(`[data-id="${id}"]`);
-                item.remove();
-
-                editIncomeModal.modal('hide');
-            },
-            error: ()=>{
-                editIncomeModal.modal('hide');
-            }
-        })
-    });
-
-
-    /*
-    * Header search
-    * */
-
-    const searchComponent = $('#global-search');
-    const searchInput = $('#global-search [type="search"]');
-    const searchResult = $('#search-results');
-
-    let searchTimeout;
-    searchInput.on('input', (event)=>{
-        searchResult.html('');
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(()=>{
-            if(event.target.value) {
-                getDeclarationList(event.target.value)
-            }
-        },1000)
-    });
-
-    function getDeclarationList(text) {
-        searchComponent.addClass('loading');
-        $.ajax({
-            url: '/ajax/get-declarations',
-            type: 'POST',
-            data: {text},
-            success: (response)=>{
-                const result = JSON.parse(response);
-                renderResultList(result, searchResult);
-                searchComponent.removeClass('loading');
-            },
-            error: (err)=>{
-                searchComponent.removeClass('loading');
-            }
-        })
-    }
-
-    function renderResultList(data, container) {
-        if(!data.length) return container.html(`<li>No results</li>`)
-        let html = data.map(item=>{
-            if(!item.linkPDF) return '';
-            return (
-                `<li>
-                    <p>${item.lastname} ${item.firstname}</p>
-                    <p>${item.placeOfWork}</p>
-                    <a href="${item.linkPDF}" download="declaration.pdf">Download Pdf</a>
-                 </li>`
-            )
-        });
-
-        container.html(html);
-    }
-
 });
