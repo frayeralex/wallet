@@ -11,13 +11,12 @@ class SignupCest
 
     public function _before(FunctionalTester $I)
     {
-        $I->amOnRoute('site/signup');
+        $I->amOnRoute('auth/signup');
     }
 
     public function signupWithEmptyFields(FunctionalTester $I)
     {
-        $I->see('Signup', 'h1');
-        $I->see('Please fill out the following fields to signup:');
+        $I->see('Registration form', 'h1');
         $I->submitForm($this->formId, []);
         $I->seeValidationError('Username cannot be blank.');
         $I->seeValidationError('Email cannot be blank.');
@@ -51,7 +50,5 @@ class SignupCest
             'username' => 'tester',
             'email' => 'tester.email@example.com',
         ]);
-
-        $I->see('Logout (tester)', 'form button[type=submit]');
     }
 }

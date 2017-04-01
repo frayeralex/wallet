@@ -9,7 +9,7 @@ use common\models\User;
 use common\models\Category;
 use common\models\Income;
 use common\models\Outcome;
-use frontend\components\Transactor;
+use frontend\helpers\Transactor;
 use yii\data\Pagination;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
@@ -26,32 +26,6 @@ use yii\widgets\ActiveForm;
  */
 class SiteController extends Controller
 {
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['logout'],
-                'rules' => [
-                    [
-                        'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
-        ];
-    }
-
     public function beforeAction($event)
     {
         if(Yii::$app->user->isGuest || $event->id === 'error'){
@@ -85,14 +59,6 @@ class SiteController extends Controller
             'currencies' => Wallet::CURRENCIES
         ]);
     }
-
-
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
-        return $this->redirect(['/auth']);
-    }
-
 
     public function actionIncome()
     {

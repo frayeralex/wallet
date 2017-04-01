@@ -2,6 +2,7 @@
 
 namespace frontend\tests\functional;
 
+use common\fixtures\User;
 use frontend\tests\FunctionalTester;
 use common\fixtures\User as UserFixture;
 
@@ -15,7 +16,7 @@ class LoginCest
                 'dataFile' => codecept_data_dir() . 'login_data.php'
             ]
         ]);
-        $I->amOnRoute('site/login');
+        $I->amOnRoute('auth/index');
     }
 
     protected function formParams($login, $password)
@@ -42,8 +43,5 @@ class LoginCest
     public function checkValidLogin(FunctionalTester $I)
     {
         $I->submitForm('#login-form', $this->formParams('erau', 'password_0'));
-        $I->see('Logout (erau)', 'form button[type=submit]');
-        $I->dontSeeLink('Login');
-        $I->dontSeeLink('Signup');
     }
 }

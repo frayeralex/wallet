@@ -99,7 +99,7 @@ jQuery(function ($) {
 
     if(incomePieChart){
         $.ajax({
-            url: '/ajax/user-incomes',
+            url: '/ajax/income',
             type: 'POST',
             success: (response)=> {
                 const incomes = JSON.parse(response);
@@ -140,7 +140,7 @@ jQuery(function ($) {
     }
     if(outcomePieChart){
         $.ajax({
-            url: '/ajax/user-outcomes',
+            url: '/ajax/outcome',
             type: 'POST',
             success: (response)=> {
                 const outcomes = JSON.parse(response);
@@ -401,24 +401,24 @@ jQuery(function ($) {
         const id = +editOutcomeModal.attr('data-outcome-id');
         const title = editOutcomeModal.find('input.title').val();
         const value = parseFloat(editOutcomeModal.find('input.value').val());
-        const date = new Date(editOutcomeModal.find('input.date').val()).toISOString();
+        const createdAt = new Date(editOutcomeModal.find('input.date').val()).toISOString();
         const data = {
             id,
             title,
             value,
-            date
+            createdAt
         };
 
         $.ajax({
-            url: '/ajax/update-outcome',
+            url: '/ajax/outcome/update',
             type: 'POST',
             data,
             success: ()=>{
                 const item = $(`[data-id="${data.id}"]`);
                 item.find('.title').text(data.title);
                 item.find('.value').text(data.value);
-                item.find('.date').text(moment(data.date).format('MMM D, YYYY'))
-                item.find('.date').attr('data-date', data.date);
+                item.find('.date').text(moment(data.createdAt).format('MMM D, YYYY'))
+                item.find('.date').attr('data-date', data.createdAt);
                 editOutcomeModal.modal('hide');
             },
             error: ()=>{
@@ -430,7 +430,7 @@ jQuery(function ($) {
     removeOutcomeBtn.on('click',()=>{
         const id = +editOutcomeModal.attr('data-outcome-id');
         $.ajax({
-            url: '/ajax/remove-outcome',
+            url: '/ajax/outcome/remove',
             type: 'POST',
             data: {id},
             success: ()=>{
@@ -481,7 +481,7 @@ jQuery(function ($) {
         };
 
         $.ajax({
-            url: '/ajax/update-income',
+            url: '/ajax/income/update',
             type: 'POST',
             data,
             success: ()=>{
@@ -501,7 +501,7 @@ jQuery(function ($) {
     removeIncomeBtn.on('click',()=>{
         const id = +editIncomeModal.attr('data-outcome-id');
         $.ajax({
-            url: '/ajax/remove-income',
+            url: '/ajax/income/remove',
             type: 'POST',
             data: {id},
             success: ()=>{

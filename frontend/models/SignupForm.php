@@ -12,9 +12,6 @@ class SignupForm extends Model
     public $username;
     public $email;
     public $password;
-    public $firstName;
-    public $lastName;
-    public $phone;
 
     /**
      * @inheritdoc
@@ -29,21 +26,12 @@ class SignupForm extends Model
 
             ['email', 'trim'],
             ['email', 'required'],
-            ['email', 'email'],
+            ['email', 'email', 'message' => \Yii::t('app', 'Email is not a valid email address.')],
             ['email', 'string', 'max' => 255],
             ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
 
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
-
-            ['firstName', 'trim'],
-            ['firstName', 'string', 'min' => 2, 'max' => 50],
-
-            ['lastName', 'trim'],
-            ['lastName', 'string', 'min' => 2, 'max' => 50],
-
-            ['phone', 'trim'],
-            ['phone', 'number'],
         ];
     }
 

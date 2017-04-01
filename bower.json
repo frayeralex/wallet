@@ -1,0 +1,22 @@
+{
+  "name": "wallet",
+  "homepage": "https://github.com/frayeralex/wallet",
+  "authors": [
+    "frayeralex <frayeralex@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "vendor/bower",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "cropperjs": "^0.8.1",
+    "font-awesome": "fontawesome#^4.7.0"
+  }
+}
