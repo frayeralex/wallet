@@ -7,7 +7,6 @@ namespace frontend\modules\ajax\controllers;
 use Yii;
 use common\models\Outcome;
 use frontend\helpers\Transactor;
-use \yii\web\Response;
 
 
 class OutcomeController extends AbstractAjaxController
@@ -47,7 +46,7 @@ class OutcomeController extends AbstractAjaxController
             if(!$outcome->validate()) return Yii::$app->response->statusCode = 400;
 
             Yii::$app->response->statusCode = Transactor::updateOutcome($outcome) ? 200 : 500;
-            return Yii::$app->response->send();
+            Yii::$app->response->send();
         }
     }
 
@@ -63,7 +62,7 @@ class OutcomeController extends AbstractAjaxController
             $this->checkOwner($outcome);
 
             Yii::$app->response->statusCode = Transactor::removeOutcome($outcome) ? 200 : 500;
-            return Yii::$app->response->send();
+            Yii::$app->response->send();
         }
     }
 }

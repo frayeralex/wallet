@@ -45,7 +45,10 @@ class Wallet extends ActiveRecord
             ['currency', 'in', 'range' => self::CURRENCIES],
 
             ['value', 'double'],
+            ['value', 'filter', 'filter' => 'intval'],
             ['value', 'default', 'value' => 0],
+
+            [['name', 'value'], 'safe'],
         ];
     }
 

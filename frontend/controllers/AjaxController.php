@@ -4,12 +4,7 @@
 namespace frontend\controllers;
 
 use common\models\Category;
-use common\models\Income;
-use common\models\Outcome;
-use common\models\Rate;
-use common\models\Wallet;
 use frontend\components\DeclarationSearcher;
-use frontend\helpers\Transactor;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use Yii;
