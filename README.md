@@ -3,7 +3,7 @@ Yii 2 "Wallet"
 
 [aws server ip](http://35.156.244.104/)
 
-[aws server name](ec2-35-156-244-104.eu-central-1.compute.amazonaws.com)
+[aws server name](http://ec2-35-156-244-104.eu-central-1.compute.amazonaws.com/)
 #### Install composer packages
 ```text
 $ composer install
