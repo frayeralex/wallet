@@ -3,17 +3,20 @@
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use \yii\bootstrap\ActiveForm;
+use frontend\assets\SiteWalletAsset;
+use frontend\assets\PdfAsset;
 
+SiteWalletAsset::register($this);
+PdfAsset::register($this);
 $this->params['user'] = $user;
-$wallets = ArrayHelper::map(ArrayHelper::toArray($walletList), 'id', 'name');
-var_dump($walletList[0]->getLabel());
+
 ?>
 <div class="site-wallet">
     <h1><?= Yii::t('app', 'Wallet page') ?></h1>
     <aside class="controls-panel">
         <div data-toggle="modal" class="add-wallet-btn" data-target="#addWallet"></div>
         <div data-toggle="modal" class="wallet-transaction" data-target="#walletTransaction"></div>
-        <div class="wallet-report-pdf"></div>
+        <div data-toggle="modal" class="wallet-report-pdf" data-target="#pdfModal"></div>
     </aside>
     <div class="row">
         <div class="col-md-12">
@@ -27,10 +30,10 @@ var_dump($walletList[0]->getLabel());
                 </thead>
                 <tbody>
                     <?php  foreach ($walletList as $walletItem): ?>
-                    <tr class="wallet-item" data-item-id="<?= $walletItem->id; ?>">
-                        <td><?= Html::encode($walletItem->name) ?></td>
+                    <tr class="wallet-item" data-id="<?= $walletItem->id; ?>">
+                        <td class="name"><?= Html::encode($walletItem->name) ?></td>
                         <td><?= Html::encode($walletItem->currency) ?></td>
-                        <td><?= Html::encode($walletItem->value) ?></td>
+                        <td class="value"><?= Html::encode($walletItem->value) ?></td>
                     <?php endforeach ?>
                 </tbody>
             </table>
@@ -72,7 +75,76 @@ var_dump($walletList[0]->getLabel());
     </div>
 </div>
 
-<!-- Modal -->
+<!-- Modal edit/remove -->
+<div class="modal fade" id="editWallet" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><?= Yii::t('app', 'Edit wallet')?></h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label><?= Yii::t('app', 'Name') ?></label>
+                        <input type="text" class="form-control name">
+                    </div>
+                    <div class="form-group">
+                        <label><?= Yii::t('app', 'Value') ?></label>
+                        <input type="number" class="form-control value" step="0.01">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="updateWallet"><?= Yii::t('app', 'Update') ?></button>
+                    <button type="button" class="btn btn-danger" id="removeWallet"><?= Yii::t('app', 'Remove') ?></button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><?= Yii::t('app', 'Close') ?></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal pdf -->
+<div class="modal fade" id="pdfModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><?= Yii::t('app', 'Create wallet report')?></h4>
+            </div>
+            <form id="pdf_wallet_form">
+                <div class="modal-body">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label><?= Yii::t('app' , 'Wallet') ?></label>
+                            <select name="wallet_from" id="pdf_wallet_id" class="form-control">
+                                <?php  foreach ($walletList as $item): ?>
+                                    <option value="<?= $item->id ?>"><?= "{$item->name} ({$item->currency})"?></option>
+                                <?php endforeach ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label><?= Yii::t('app', 'From') ?></label>
+                            <input type="date" class="form-control" id="pdf_date_from">
+                        </div>
+                        <div class="form-group">
+                            <label><?= Yii::t('app', 'To') ?></label>
+                            <input type="date" class="form-control" id="pdf_date_to">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success"><?= Yii::t('app', 'Generate PDF') ?></button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><?= Yii::t('app', 'Close') ?></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal transactions-->
 <div class="modal fade" id="walletTransaction" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -80,13 +152,20 @@ var_dump($walletList[0]->getLabel());
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title"><?= Yii::t('app', 'Wallet transfers') ?></h4>
             </div>
+            <form>
             <div class="modal-body">
                 <div class="">
                     <div class="rate row">
                         <div class="col-md-5">
                             <div class="form-group">
                                 <label><?= Yii::t('app' , 'From') ?></label>
-                                <?= Html::dropDownList('wallet_from', null,$wallets, ['class' => 'form-control']) ?>
+                                <select name="wallet_from" id="wallet_from" class="form-control">
+                                <?php  foreach ($walletList as $item): ?>
+                                    <option data-currency="<?= $item->currency ?>"
+                                            data-value="<?= $item->value ?>"
+                                            value="<?= $item->id ?>"><?= "{$item->name} ({$item->currency})"?></option>
+                                <?php endforeach ?>
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -95,34 +174,43 @@ var_dump($walletList[0]->getLabel());
                         <div class="col-md-5">
                             <div class="form-group">
                                 <label><?= Yii::t('app' , 'To') ?></label>
-                                <?= Html::dropDownList('wallet_to_name', null,$wallets, ['class' => 'form-control']) ?>
+                                <select name="wallet_to" id="wallet_to" class="form-control">
+                                    <?php  foreach ($walletList as $item): ?>
+                                        <option data-currency="<?= $item->currency ?>"
+                                                data-value="<?= $item->value ?>"
+                                                value="<?= $item->id ?>"><?= "{$item->name} ({$item->currency})"?></option>
+                                    <?php endforeach ?>
+                                </select>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-md-4">
                             <div class="form-group">
-                                <?= Html::input('number','wallet_from_value', null, [
-                                        'class' => 'form-control',
-                                        'step' => '0.01'
-                                ])?>
+                                <label><?= Yii::t('app' , 'Transfer sum') ?></label>
+                                <input type="number"
+                                       class="form-control"
+                                       step="0.01"
+                                       id="value_from">
                             </div>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-4">
                             <div class="form-group">
-                                <?= Html::input('number','wallet_from_value', null, [
-                                        'class' => 'form-control',
-                                        'step' => '0.01'])
-                                ?>
+                                <label><?= Yii::t('app' , 'Enter rate') ?></label>
+                                <input type="number"
+                                       class="form-control"
+                                       step="0.01"
+                                       id="value_rate">
                             </div>
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-4">
                             <div class="form-group">
-                                <?= Html::input('number','wallet_to_value', null,[
-                                        'class' => 'form-control',
-                                        'step' => '0.01',
-                                        'disabled' => true]
-                                )?>
+                                <label><?= Yii::t('app' , 'Result (1 * rate)') ?></label>
+                                <input type="number"
+                                       class="form-control"
+                                       step="0.01"
+                                       disabled="true"
+                                       id="value_to">
                             </div>
                         </div>
                     </div>
@@ -133,6 +221,7 @@ var_dump($walletList[0]->getLabel());
                 <button type="submit" class="btn btn-success"><?= Yii::t('app', 'Apply') ?></button>
                 <button type="button" class="btn btn-default" data-dismiss="modal"><?= Yii::t('app', 'Close') ?></button>
             </div>
+            </form>
         </div>
     </div>
 </div>

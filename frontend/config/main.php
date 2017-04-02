@@ -11,6 +11,11 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
+    'modules' => [
+        'ajax' => [
+            'class' => 'frontend\modules\ajax\Ajax',
+        ],
+    ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
@@ -23,9 +28,6 @@ return [
         'session' => [
             // this is the name of the session cookie used for login on the frontend
             'name' => 'advanced-frontend',
-        ],
-        'transactor' => [
-            'class' => 'frontend\components\Transactor'
         ],
         'clientS3' => [
             'class' => 'frontend\components\ClientS3',

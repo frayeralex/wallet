@@ -4,11 +4,10 @@
 namespace frontend\components;
 
 
-use yii\base\Component;
 use yii\httpclient\Client;
 use yii\helpers\ArrayHelper;
 
-class DeclarationSearcher extends Component
+class DeclarationSearcher
 {
     const NAZK_URL = 'https://public-api.nazk.gov.ua/v1/declaration/?q=';
     const OPTIONS = [
@@ -22,7 +21,9 @@ class DeclarationSearcher extends Component
 
     static public function findByWords($text)
     {
-        if(!$text) return;
+        $result = [];
+        if(!$text) return $result;
+
         $query = '';
         $words = preg_split("/[\s]+/", $text);
         foreach ($words as $word){
@@ -36,10 +37,8 @@ class DeclarationSearcher extends Component
             ->setMethod('get')
             ->send();
         if ($response->isOk){
-            $items = ArrayHelper::getValue($response->getData(), 'items');
-            if(!count($items)) return;
-
-            return $items;
+            $result = ArrayHelper::getValue($response->getData(), 'items', []);
         }
+        return $result;
     }
 }

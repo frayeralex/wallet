@@ -15,7 +15,7 @@ use yii\db\ActiveRecord;
  * @property integer $id
  * @property string $title
  * @property double $value
- * @property integer $createdAt
+ * @property date $createdAt
  * @property integer $updatedAt
  * @property integer $userId
  * @property integer $categoryId
@@ -35,10 +35,15 @@ class Outcome extends ActiveRecord
             ['title', 'trim'],
             ['title', 'string', 'min' => 2, 'max' => 50],
             ['value', 'required'],
+            ['value', 'filter', 'filter' => 'intval'],
             ['value', 'double'],
-            [['value', 'title', 'categoryId', 'walletId'], 'safe'],
+            ['createdAt', 'filter', 'filter' => function($val){
+                return Yii::$app->formatter->asDate($val, 'Y-MM-dd HH:i:s');
+            }],
+            [['value', 'title', 'categoryId', 'walletId', 'createdAt'], 'safe'],
         ];
     }
+
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)){
