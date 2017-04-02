@@ -3,13 +3,15 @@
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use \yii\bootstrap\ActiveForm;
+use frontend\assets\SiteCategoryAsset;
 
+SiteCategoryAsset::register($this);
 $this->params['user'] = $user;
 ?>
 <div class="category-page">
     <h1>
         <th><?= Yii::t('app', 'Category page') ?></th>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCategory">Add category</button>
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addCategory">Add category</button>
     </h1>
 
     <div class="row">

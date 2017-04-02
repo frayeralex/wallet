@@ -9,6 +9,9 @@ use Yii;
 class WalletController extends AbstractAjaxController
 {
 
+    /**
+     * Update Wallet record
+     */
     public function actionUpdate()
     {
         if(Yii::$app->request->isAjax){
@@ -24,6 +27,9 @@ class WalletController extends AbstractAjaxController
     }
 
 
+    /**
+     * Change Wallet active prop
+     */
     public function actionRemove()
     {
         if(Yii::$app->request->isAjax){

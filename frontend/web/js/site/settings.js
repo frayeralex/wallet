@@ -78,9 +78,10 @@ jQuery(function ($) {
     });
 
     function getDeclarationList(text) {
+        console.log(text)
         searchComponent.addClass('loading');
         $.ajax({
-            url: '/ajax/get-declarations',
+            url: '/ajax/settings/declarations',
             type: 'POST',
             data: {text},
             success: (response)=>{

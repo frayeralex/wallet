@@ -279,7 +279,7 @@ jQuery(function ($) {
     }
 
 
-    /**
+    /*
      * Sidebar actions
      */
 
@@ -293,60 +293,4 @@ jQuery(function ($) {
             type: 'POST'
         })
     }
-
-    /**
-     * Category page
-     */
-
-    const categoryItems = $('.category-item');
-    const editCategoryModal = $('#editCategory');
-    const updateCategoryBtn = editCategoryModal.find('#updateCategory');
-    const removeCategoryBtn = editCategoryModal.find('#removeCategory');
-
-    categoryItems.on('click', (event)=>{
-        const categoryItem = $(event.currentTarget);
-        const categoryId = categoryItem.attr('data-catagory-id');
-        const categoryName = categoryItem.find('.name').text();
-
-        editCategoryModal.find('input.category-name').val(categoryName);
-        editCategoryModal.attr('data-category', categoryId);
-        editCategoryModal.modal('show');
-    });
-
-    updateCategoryBtn.on('click', ()=>{
-        const id = editCategoryModal.attr('data-category');
-        const name = editCategoryModal.find('input.category-name').val();
-        if(!id || !name) return;
-
-        $.ajax({
-            url: '/ajax/update-category-name',
-            type: 'POST',
-            data: {id, name },
-            success: ()=>{
-                $(`[data-catagory-id="${id}"] .name`).text(name);
-                editCategoryModal.modal('hide');
-            },
-            error: ()=>{
-                editCategoryModal.modal('hide');
-            }
-        })
-    });
-
-    removeCategoryBtn.on('click', ()=>{
-        const id = editCategoryModal.attr('data-category');
-        if(!id) return;
-
-        $.ajax({
-            url: '/ajax/remove-category',
-            type: 'POST',
-            data: {id },
-            success: ()=>{
-                $(`[data-catagory-id="${id}"]`).remove();
-                editCategoryModal.modal('hide');
-            },
-            error: ()=>{
-                editCategoryModal.modal('hide');
-            }
-        })
-    });
 });
