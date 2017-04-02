@@ -19,8 +19,7 @@
 }
 .controls-panel{
     display: flex;
-    border: 1px solid #353058;
-    border-radius: 5px;
+    justify-content: center;
 }
 .controls-panel > div{
     margin: 10px;

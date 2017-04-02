@@ -20,7 +20,7 @@ class WalletController extends AbstractAjaxController
             $this->checkOwner($wallet);
 
             $wallet->setAttributes(Yii::$app->request->post());
-            if(!$wallet->validate()) return Yii::$app->response->send(400);
+            if(!$wallet->validate()) Yii::$app->response->send(400);
             $code = $wallet->save() ? 200 : 500;
             Yii::$app->response->send($code);
         }
@@ -28,7 +28,7 @@ class WalletController extends AbstractAjaxController
 
 
     /**
-     * Change Wallet active prop
+     * Change Wallet active prop (remove)
      */
     public function actionRemove()
     {
@@ -39,6 +39,34 @@ class WalletController extends AbstractAjaxController
             $wallet->active = Wallet::DISACTIVE;
             $code = $wallet->save() ? 200 : 500;
             Yii::$app->response->send($code);
+        }
+    }
+
+    public function actionReport()
+    {
+        if(Yii::$app->request->isAjax){
+            $wallet = Wallet::findOne($this->getValue('id'));
+            $from = $this->getValue('dateFrom');
+            $to = $this->getValue('dateTo');
+            $this->checkModel($wallet);
+            $this->checkOwner($wallet);
+
+            $incomes = $wallet->getIncomes()
+                ->where(['between', 'createdAt', $from, $to])
+                ->asArray()
+                ->orderBy('createdAt DESC')
+                ->all();
+            $outcomes = $wallet->getOutcomes()
+                ->where(['between', 'createdAt', $from, $to])
+                ->orderBy('createdAt DESC')
+                ->asArray()
+                ->all();
+
+            return $this->toJson([
+                'incomes' => $incomes,
+                'outcomes' => $outcomes,
+                'wallet' => $wallet->toArray()
+            ]);
         }
     }
 

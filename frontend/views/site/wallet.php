@@ -4,8 +4,10 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use \yii\bootstrap\ActiveForm;
 use frontend\assets\SiteWalletAsset;
+use frontend\assets\PdfAsset;
 
 SiteWalletAsset::register($this);
+PdfAsset::register($this);
 $this->params['user'] = $user;
 
 ?>
@@ -14,7 +16,7 @@ $this->params['user'] = $user;
     <aside class="controls-panel">
         <div data-toggle="modal" class="add-wallet-btn" data-target="#addWallet"></div>
         <div data-toggle="modal" class="wallet-transaction" data-target="#walletTransaction"></div>
-        <div class="wallet-report-pdf"></div>
+        <div data-toggle="modal" class="wallet-report-pdf" data-target="#pdfModal"></div>
     </aside>
     <div class="row">
         <div class="col-md-12">
@@ -101,6 +103,46 @@ $this->params['user'] = $user;
         </div>
     </div>
 </div>
+
+
+<!-- Modal pdf -->
+<div class="modal fade" id="pdfModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><?= Yii::t('app', 'Create wallet report')?></h4>
+            </div>
+            <form id="pdf_wallet_form">
+                <div class="modal-body">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label><?= Yii::t('app' , 'Wallet') ?></label>
+                            <select name="wallet_from" id="pdf_wallet_id" class="form-control">
+                                <?php  foreach ($walletList as $item): ?>
+                                    <option value="<?= $item->id ?>"><?= "{$item->name} ({$item->currency})"?></option>
+                                <?php endforeach ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label><?= Yii::t('app', 'From') ?></label>
+                            <input type="date" class="form-control" id="pdf_date_from">
+                        </div>
+                        <div class="form-group">
+                            <label><?= Yii::t('app', 'To') ?></label>
+                            <input type="date" class="form-control" id="pdf_date_to">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success"><?= Yii::t('app', 'Generate PDF') ?></button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><?= Yii::t('app', 'Close') ?></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 
 <!-- Modal transactions-->
 <div class="modal fade" id="walletTransaction" role="dialog">
