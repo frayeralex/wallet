@@ -14,12 +14,8 @@ use yii\data\Pagination;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 use common\models\Wallet;
 use yii\web\UploadedFile;
-use yii\web\Response;
-use yii\widgets\ActiveForm;
 
 /**
  * Site controller
@@ -53,11 +49,19 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $user = User::findOne(Yii::$app->getUser()->id);
-        return $this->render('index', [
-            'user' => $user,
-            'currencies' => Wallet::CURRENCIES
-        ]);
+        if(!Yii::$app->user->isGuest){
+            $user = User::findOne(Yii::$app->getUser()->id);
+            $wallets = $user->getWallets()
+                ->where(['active' => Wallet::ACTIVE])
+                ->asArray()
+                ->all();
+            $currencies = ArrayHelper::getColumn($wallets, 'currency');
+
+            return $this->render('index', [
+                'user' => $user,
+                'currencies' => array_unique($currencies)
+            ]);
+        }
     }
 
     public function actionIncome()

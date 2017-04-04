@@ -12,12 +12,17 @@ $this->params['user'] = $user;
 
 ?>
 <div class="site-wallet">
-    <h1><?= Yii::t('app', 'Wallet page') ?></h1>
-    <aside class="controls-panel">
-        <div data-toggle="modal" class="add-wallet-btn" data-target="#addWallet"></div>
-        <div data-toggle="modal" class="wallet-transaction" data-target="#walletTransaction"></div>
-        <div data-toggle="modal" class="wallet-report-pdf" data-target="#pdfModal"></div>
-    </aside>
+    <div class="top-sidebar">
+        <h1 class="page-title"><?= Yii::t('app', 'Wallet page') ?></h1>
+        <ul class="btn-group btn-group-lg ">
+            <li class="btn btn-default"><div data-toggle="modal" class="add-wallet-btn" data-target="#addWallet"></div></li>
+            <?php if (count($walletList)) : ?>
+            <li class="btn btn-default"><div data-toggle="modal" class="wallet-transaction" data-target="#walletTransaction"></div></li>
+            <li class="btn btn-default"><div data-toggle="modal" class="wallet-report-pdf" data-target="#pdfModal"></div></>
+            <?php endif; ?>
+        </div>
+    </div>
+    <?php if (count($walletList)) : ?>
     <div class="row">
         <div class="col-md-12">
             <table class="table table-hover">
@@ -39,6 +44,7 @@ $this->params['user'] = $user;
             </table>
         </div>
     </div>
+    <?php endif; ?>
     <div class="chart-grid">
         <section class="flex-item big">
             <h2><?= Yii::t('app', 'Currency rates') ?></h2>

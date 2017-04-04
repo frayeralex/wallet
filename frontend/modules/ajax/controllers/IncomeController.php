@@ -7,7 +7,7 @@ namespace frontend\modules\ajax\controllers;
 use Yii;
 use common\models\Income;
 use frontend\helpers\Transactor;
-use yii\web\Response;
+use common\models\Wallet;
 
 class IncomeController extends AbstractAjaxController
 {
@@ -17,9 +17,13 @@ class IncomeController extends AbstractAjaxController
     public function actionIndex ()
     {
         $incomes = [];
-        if(Yii::$app->request->isAjax && !Yii::$app->user->isGuest){
+        $currency = (int)$this->getValue('currency', 0);
+        if(Yii::$app->request->isAjax){
             $incomes = Income::find()
-                ->where(['userId' => Yii::$app->getUser()->id])
+                ->joinWith('wallet')
+                ->andWhere([
+                    'income.userId' => Yii::$app->getUser()->id,
+                    'wallet.currency' => Wallet::CURRENCIES[$currency]])
                 ->with('category')
                 ->asArray()
                 ->all();

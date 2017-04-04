@@ -75,10 +75,11 @@ jQuery(function ($) {
         return chart;
     }
 
-    if(incomePieChart){
+    function renderIncomePieChart(currency) {
         $.ajax({
             url: '/ajax/income',
             type: 'GET',
+            data: {currency},
             success: (response)=> {
                 const incomes = JSON.parse(response);
                 const rows = [['Category', 'Value']];
@@ -112,14 +113,19 @@ jQuery(function ($) {
         });
     }
 
+    if(incomePieChart){
+        renderIncomePieChart(0)
+    }
+
     const outcomePieChart = document.querySelector('#outcomePieChart');
     function formatDate(data) {
         return data ? moment(data).format("YYYY MM DD") : moment().format("YYYY MM DD");
     }
-    if(outcomePieChart){
+    function renderOutcomePieChart(currency) {
         $.ajax({
             url: '/ajax/outcome',
             type: 'GET',
+            data: { currency },
             success: (response)=> {
                 const outcomes = JSON.parse(response);
                 const rows = [['Category', 'Value']];
@@ -152,19 +158,17 @@ jQuery(function ($) {
             }
         });
     }
+    if(outcomePieChart){
+        renderOutcomePieChart();
+    }
 
     const lastTransactionsColumnChart = document.querySelector('#lastTransactionsColumnChart');
-    const $currencySelect = $('#currencySelect');
     let startDate = moment().subtract(7, 'days').format("YYYY-MM-DD");
     let endDate = moment().add(1, 'days').format("YYYY-MM-DD");
-    let currencyId = $currencySelect.val();
     let lastTransactionsChart;
 
-    $currencySelect.on('change',(event)=>{
-        renderTransactionsChart(startDate,endDate,event.target.value, lastTransactionsChart)
-    });
 
-    function renderTransactionsChart(dateStart, dateEnd, currency) {
+    function renderTransactionsChart(dateStart, dateEnd, currency = 0) {
         $.ajax({
             url: '/ajax/analytic/index',
             type: 'GET',
@@ -228,7 +232,7 @@ jQuery(function ($) {
     }
 
     if(lastTransactionsColumnChart){
-        renderTransactionsChart(startDate,endDate,currencyId);
+        renderTransactionsChart(startDate,endDate);
     }
 
     const ratesLinearChart = document.querySelector('#ratesLinearChart');
@@ -277,6 +281,38 @@ jQuery(function ($) {
             }
         })
     }
+
+    /*
+    * Currency control
+    * */
+
+    const currencyControl = $("#currency-control");
+
+    currencyControl.on('click','button', (event)=>{
+        const currency = $(event.currentTarget).attr('data-value');
+        currencyControl.attr('data-currency', currency);
+        renderIncomePieChart(currency);
+        renderOutcomePieChart(currency);
+        renderTransactionsChart(startDate,endDate,currency,lastTransactionsChart)
+
+        $('.btn-info[data-value]')
+            .removeClass('btn-info')
+            .addClass('btn-default');
+        $(`.btn[data-value="${currency}"]`)
+            .removeClass('btn-default')
+            .addClass('btn-info');
+    });
+
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        const currency =  currencyControl.attr('data-currency');
+        if(e.target.href.includes('income')){
+            renderIncomePieChart(currency);
+        }else if(e.target.href.includes('outcome')){
+            renderOutcomePieChart(currency);
+        }else if (e.target.href.includes('last')){
+            renderTransactionsChart(startDate,endDate,currency,lastTransactionsChart)
+        }
+    });
 
 
     /*

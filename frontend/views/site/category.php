@@ -9,43 +9,52 @@ SiteCategoryAsset::register($this);
 $this->params['user'] = $user;
 ?>
 <div class="category-page">
-    <h1>
-        <th><?= Yii::t('app', 'Category page') ?></th>
-        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addCategory">Add category</button>
-    </h1>
+    <div class="top-sidebar">
+        <h1 class="page-title"><?= Yii::t('app', 'Category page') ?></h1>
+        <div class="btn-group btn-group-lg ">
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addCategory">Add category</button>
+        </div>
+    </div>
 
     <div class="row">
+        <?php if (count($income)) : ?>
         <div class="col-md-6">
-            <h2>Incomes</h2>
+            <h2><?= Yii::t('app', 'Incomes') ?></h2>
             <table class="table table-hover">
                 <thead>
                 <tr>
+                    <th><?= Yii::t('app', '#') ?></th>
                     <th><?= Yii::t('app', 'Name') ?></th>
                     <th><?= Yii::t('app', 'Created') ?></th>
                 </tr>
                 </thead>
                 <tbody>
-                <?php  foreach ($income as $item){?>
+                <?php  foreach ($income as $key => $item) : ?>
                 <tr class="category-item" data-catagory-id="<?= $item->id ?>">
-                    <td class="name"><?= Html::decode($item->name) ?></td>
+                    <td><?= $key +1 ?></td>
+                    <td class="name"><?= Html::encode($item->name) ?></td>
                     <td><?= Yii::$app->formatter->asDate($item->createdAt) ?></td>
                 </tr>
                 </tbody>
-                <?php } ?>
+                <?php endforeach; ?>
             </table>
         </div>
+        <?php endif; ?>
+        <?php if (count($outcome)) : ?>
         <div class="col-md-6">
-            <h2>Outcomes</h2>
+            <h2><?= Yii::t('app', 'Outcomes') ?></h2>
             <table class="table table-hover">
                 <thead>
                 <tr>
+                    <th><?= Yii::t('app', '#') ?></th>
                     <th><?= Yii::t('app', 'Name') ?></th>
                     <th><?= Yii::t('app', 'Created') ?></th>
                 </tr>
                 </thead>
                 <tbody>
-                <?php  foreach ($outcome as $item){?>
+                <?php  foreach ($outcome as $key => $item){?>
                     <tr class="category-item" data-catagory-id="<?= $item->id ?>">
+                        <td><?= $key +1 ?></td>
                         <td class="name"><?= $item->name ?></td>
                         <td class="type"><?= Yii::$app->formatter->asDate($item->createdAt) ?></td>
                     </tr>
@@ -53,6 +62,7 @@ $this->params['user'] = $user;
                 <?php } ?>
             </table>
         </div>
+        <?php endif; ?>
     </div>
 
     <!-- Modal -->

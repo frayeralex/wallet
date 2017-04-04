@@ -83,50 +83,38 @@
 /**
  * Analytic page
  */
+.top-sidebar .page-title{
+    margin: 0;
+    padding: 15px;
 
-.analytic-page .chart-grid{
+}
+.top-sidebar{
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
 }
-.chart-grid .flex-item{
-    width: 300px;
+
+.analytic-page .currency-control{
     flex-grow: 1;
+    padding: 0 15px;
 }
 
-.chart-grid .flex-item.big{
-    width: 100%;
-    flex-grow: 1;
-}
-.chart-grid .chart-wrap{
+.chart-wrap{
     width: 100%;
     height: 400px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.chart-grid .chart-wrap .loader{
+.chart-wrap .loader{
     margin: auto;
 }
+
 
 /*
  * Settings page
  */
 
-.settings-wrap{
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.settings-wrap .info-form{
-    width: 350px;
-    flex-grow: 1;
-    flex-shrink: 0;
-}
-.settings-wrap .avatar-form{
-    width: 250px;
-    flex-grow: 1;
-    flex-shrink: 0;
+.avatar-form{
     display: flex;
     flex-direction: column;
     justify-content: flex-start;

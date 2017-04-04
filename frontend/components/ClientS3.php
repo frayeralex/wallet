@@ -7,7 +7,6 @@ namespace frontend\components;
 use Aws\S3\Exception\S3Exception;
 use Aws\S3\S3Client;
 use yii\base\Component;
-use yii\helpers\ArrayHelper;
 
 
 class ClientS3 extends Component
