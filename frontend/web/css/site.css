@@ -9,6 +9,7 @@ body {
 }
 .flex{
     display: flex;
+    align-items: center;
 }
 
 ::-webkit-scrollbar {

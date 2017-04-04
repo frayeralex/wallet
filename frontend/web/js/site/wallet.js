@@ -187,9 +187,9 @@ jQuery(function ($) {
         $.ajax({
             url: reportUrl,
             method: "GET",
-            dataType: 'json',
             data: { id, dateFrom, dateTo },
-            success: (result)=>{
+            success: (res)=>{
+                const result = JSON.parse(res);
                 result.wallet.dateFrom = dateFrom;
                 result.wallet.dateTo = dateTo;
                 generatePdf(result);

@@ -14,12 +14,8 @@ use yii\data\Pagination;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 use common\models\Wallet;
 use yii\web\UploadedFile;
-use yii\web\Response;
-use yii\widgets\ActiveForm;
 
 /**
  * Site controller

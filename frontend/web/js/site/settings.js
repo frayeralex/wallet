@@ -10,6 +10,7 @@ jQuery(function ($) {
     const image = document.getElementById('crop');
     const preview = document.querySelectorAll('.preview');
     const avatarInput = $('#avatarInput');
+    const removeAvatar = $('#removeAvatar');
     const cropArea = $('.crop-wrap');
     const mainAvatar = document.querySelector('#avatar');
 
@@ -55,6 +56,33 @@ jQuery(function ($) {
                 }
             })
         })
+    });
+
+    removeAvatar.on('click', ()=>{
+        $.ajax({
+            url: '/ajax/settings/remove-avatar',
+            method: 'delete',
+            success:(res)=>{
+                mainAvatar.src = '/img/user.png';
+            },
+        })
+    });
+
+    /*
+    * Phone validate
+    * */
+
+    const phoneInput = $("#user-phone");
+
+    phoneInput.on('input', (event)=>{
+        let { value } = event.target;
+        if(value){
+            setTimeout(()=>{
+                value = 0
+            },0);
+        }
+
+       console.log(event.target.value)
     });
 
 

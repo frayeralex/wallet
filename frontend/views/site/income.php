@@ -8,12 +8,14 @@ use yii\widgets\LinkPager;
 $this->params['user'] = $user;
 ?>
 <div class="income-page">
-    <h1>
-        <?=Yii::t('app', 'Incomes') ?>
-        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addIncome"><?= Yii::t('app', 'Add +') ?></button>
-    </h1 >
+    <div class="top-sidebar">
+        <h1 class="page-title"><?=Yii::t('app', 'Incomes') ?></h1>
+        <div class="btn-group btn-group-lg">
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addIncome"><?= Yii::t('app', 'Add income') ?></button>
+        </div>
+    </div>
 
-    <?php if(!!count($wallets) && !!count($categories)) : ?>
+    <?php if(count($wallets) && count($categories)) : ?>
     <div class="row">
         <div class="col-md-12">
             <table class="table table-hover">

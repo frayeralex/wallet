@@ -10,10 +10,12 @@ SiteOutcomeAsset::register($this);
 $this->params['user'] = $user;
 ?>
 <div class="outcome-page">
-    <h1>
-        <?= Yii::t('app', 'Outcomes') ?>
-        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addOutcome"><?= Yii::t('app', 'Add +') ?></button>
-    </h1>
+    <div class="top-sidebar">
+        <h1 class="page-title"><?= Yii::t('app', 'Outcomes') ?></h1>
+        <div class="btn-group btn-group-lg">
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addOutcome"><?= Yii::t('app', 'Add outcome') ?></button>
+        </div>
+    </div>
 
     <?php if(!!count($wallets) && !!count($categories)) : ?>
     <div class="row">

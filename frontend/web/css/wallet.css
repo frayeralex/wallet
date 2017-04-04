@@ -83,11 +83,13 @@
 /**
  * Analytic page
  */
-.analytic-page .page-title{
+.top-sidebar .page-title{
     margin: 0;
-    padding: 15px 0;
+    padding: 15px;
+
 }
-.analytic-page .top-sidebar{
+.top-sidebar{
+    display: flex;
     align-items: center;
 }
 
@@ -112,20 +114,7 @@
  * Settings page
  */
 
-.settings-wrap{
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.settings-wrap .info-form{
-    width: 350px;
-    flex-grow: 1;
-    flex-shrink: 0;
-}
-.settings-wrap .avatar-form{
-    width: 250px;
-    flex-grow: 1;
-    flex-shrink: 0;
+.avatar-form{
     display: flex;
     flex-direction: column;
     justify-content: flex-start;

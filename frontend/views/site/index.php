@@ -8,13 +8,13 @@ $this->params['user'] = $user;
 ?>
 <div class="analytic-page">
     <?php if ($currencies) : ?>
-    <div class="flex top-sidebar">
+    <div class="top-sidebar">
         <h1 class="page-title"><?= Yii::t('app', 'Analytic page') ?></h1>
-        <div class="btn-group btn-group-lg currency-control" id="currency-control" data-currency="<?= $currencies[0] ?>">
+        <aside class="btn-group btn-group-lg currency-control" id="currency-control" data-currency="<?= $currencies[0] ?>">
             <?php  foreach ($currencies as $index => $item): ?>
                 <button class="btn <?= $index === 0 ? 'btn-info' : 'btn-default' ?>" data-value="<?= $index ?>"><?= Html::encode($item) ?></button>
             <?php endforeach ?>
-        </div>
+        </aside>
     </div>
     <div>
         <ul class="nav nav-tabs" role="tablist">
