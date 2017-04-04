@@ -15,7 +15,7 @@ $this->params['user'] = $user;
         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addOutcome"><?= Yii::t('app', 'Add +') ?></button>
     </h1>
 
-    <?php if(!!count($wallets) && !!count($categories)){ ?>
+    <?php if(!!count($wallets) && !!count($categories)) : ?>
     <div class="row">
         <div class="col-md-12">
             <table class="table table-hover">
@@ -29,7 +29,7 @@ $this->params['user'] = $user;
                 </tr>
                 </thead>
                 <tbody>
-                <?php  foreach ($transactions as $item){?>
+                <?php  foreach ($transactions as $item): ?>
                     <tr class="outcome-item" data-id="<?= $item->id?>">
                         <td class="title"><?= Html::encode($item->title) ?></td>
                         <td class="category"><?= Html::encode($item->category->name) ?></td>
@@ -37,7 +37,7 @@ $this->params['user'] = $user;
                         <td class="value"><?= Html::encode($item->value) ?> </td>
                         <td class="date" data-date="<?=$item->createdAt?>"><?= Yii::$app->formatter->asDate($item->createdAt) ?></td>
                     </tr>
-                <?php }?>
+                <?php endforeach ?>
                 </tbody>
             </table>
         </div>
@@ -111,19 +111,19 @@ $this->params['user'] = $user;
         </div>
     </div>
 
-    <?php } if(!count($wallets)) { ?>
+    <?php elseif (!count($wallets)) : ?>
     <div class="alert alert-warning" role="alert">
         <?= Yii::t('app', 'Firstly you must add wallet')?>
         <a href="<?= Yii::$app->urlManager->createUrl(["/site/wallet"])?>">
             <?= Yii::t('app', 'Please, go to wallet page')?>
         </a>
     </div>
-    <?php } if (!count($categories)) {?>
+    <?php elseif (!count($categories)) : ?>
     <div class="alert alert-warning" role="alert">
         <?= Yii::t('app', 'Firstly you must add outcome category')?>
         <a href="<?= Yii::$app->urlManager->createUrl(["/site/category"])?>">
             <?= Yii::t('app', 'Please, go to category page')?>
         </a>
     </div>
-    <?php } ?>
+    <?php endif; ?>
 </div>

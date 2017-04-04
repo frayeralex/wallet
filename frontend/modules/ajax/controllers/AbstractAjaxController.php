@@ -15,19 +15,21 @@ class AbstractAjaxController extends Controller
 {
     /**
      * @param string $key
+     * @param mixed[=null] $default
      * @return mixed|null
      */
-    protected function getValue($key)
+    protected function getValue($key, $default = null)
     {
-        return $key ? ArrayHelper::getValue(Yii::$app->request->get(), $key) : null;
+        return $key ? ArrayHelper::getValue(Yii::$app->request->get(), $key, $default) : $default;
     }
     /**
      * @param string $key
+     * @param mixed[=null] $default
      * @return mixed|null
      */
-    protected function getPostValue($key)
+    protected function getPostValue($key, $default = null)
     {
-        return $key ? ArrayHelper::getValue(Yii::$app->request->post(), $key) : null;
+        return $key ? ArrayHelper::getValue(Yii::$app->request->post(), $key, $default) : $default;
     }
 
     /**
@@ -51,6 +53,19 @@ class AbstractAjaxController extends Controller
     protected function checkModel(ActiveRecord $model)
     {
         if(empty($model)) {
+            Yii::$app->response->statusCode = 404;
+            Yii::$app->response->send();
+        }else{
+            return true;
+        }
+    }
+
+    /**
+     * @param $value mixed
+     * @return bool
+     */
+    protected function checkValue($value){
+        if(empty($value)) {
             Yii::$app->response->statusCode = 404;
             Yii::$app->response->send();
         }else{

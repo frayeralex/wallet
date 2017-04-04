@@ -13,7 +13,7 @@ $this->params['user'] = $user;
         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addIncome"><?= Yii::t('app', 'Add +') ?></button>
     </h1 >
 
-    <?php if(!!count($wallets) && !!count($categories)){ ?>
+    <?php if(!!count($wallets) && !!count($categories)) : ?>
     <div class="row">
         <div class="col-md-12">
             <table class="table table-hover">
@@ -112,19 +112,19 @@ $this->params['user'] = $user;
     </div>
 
 
-    <?php } if(!count($wallets)) { ?>
+    <?php elseif (!count($wallets)) : ?>
     <div class="alert alert-warning" role="alert">
         <?= Yii::t('app', 'Firstly you must add wallet')?>
         <a href="<?= Yii::$app->urlManager->createUrl(["site/wallet"])?>">
             <?= Yii::t('app', 'Please, go to wallet page')?>
         </a>
     </div>
-    <?php } if (!count($categories)) {?>
+    <?php elseif (!count($categories)) : ?>
     <div class="alert alert-warning" role="alert">
         <?= Yii::t('app', 'Firstly you must add income category')?>
         <a href="<?= Yii::$app->urlManager->createUrl(["site/category"])?>">
             <?= Yii::t('app', 'Please, go to category page')?>
         </a>
     </div>
-    <?php } ?>
+    <?php endif; ?>
 </div>

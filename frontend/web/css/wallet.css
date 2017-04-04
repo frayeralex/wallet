@@ -83,31 +83,30 @@
 /**
  * Analytic page
  */
-
-.analytic-page .chart-grid{
-    display: flex;
-    flex-wrap: wrap;
+.analytic-page .page-title{
+    margin: 0;
+    padding: 15px 0;
+}
+.analytic-page .top-sidebar{
     align-items: center;
 }
-.chart-grid .flex-item{
-    width: 300px;
+
+.analytic-page .currency-control{
     flex-grow: 1;
+    padding: 0 15px;
 }
 
-.chart-grid .flex-item.big{
-    width: 100%;
-    flex-grow: 1;
-}
-.chart-grid .chart-wrap{
+.chart-wrap{
     width: 100%;
     height: 400px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.chart-grid .chart-wrap .loader{
+.chart-wrap .loader{
     margin: auto;
 }
+
 
 /*
  * Settings page

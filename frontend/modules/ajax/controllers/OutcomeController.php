@@ -7,6 +7,8 @@ namespace frontend\modules\ajax\controllers;
 use Yii;
 use common\models\Outcome;
 use frontend\helpers\Transactor;
+use common\models\Wallet;
+
 
 
 class OutcomeController extends AbstractAjaxController
@@ -18,9 +20,13 @@ class OutcomeController extends AbstractAjaxController
     {
         $outcomes = [];
 
+        $currency = (int)$this->getValue('currency', 0);
         if(Yii::$app->request->isAjax){
             $outcomes = Outcome::find()
-                ->where(['userId' => Yii::$app->getUser()->id])
+                ->joinWith('wallet')
+                ->andWhere([
+                    'outcome.userId' => Yii::$app->getUser()->id,
+                    'wallet.currency' => Wallet::CURRENCIES[$currency]])
                 ->with('category')
                 ->asArray()
                 ->all();
