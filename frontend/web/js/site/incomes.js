@@ -14,13 +14,14 @@ jQuery(function ($) {
     const removeIncomeBtn = $('#removeIncome');
 
     incomeItems.on('click', (event)=>{
+        console.log("run");
         const item = $(event.currentTarget);
         const id = item.attr('data-id');
         const title = item.find('.title').text();
         const value = item.find('.value').text();
         const date = item.find('.date').attr('data-date');
 
-        editIncomeModal.attr('data-outcome-id', id);
+        editIncomeModal.attr('data-income-id', id);
         editIncomeModal.find('input.title').val(title);
         editIncomeModal.find('input.value').val(parseFloat(value));
         editIncomeModal.find('input.date').val(date.slice(0,10));
